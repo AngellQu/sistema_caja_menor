@@ -51,7 +51,7 @@ CREATE TABLE ingreso_producto (
     fecha DATE NOT NULL,
     cantidad INT(50) NOT NULL,
     monto INT NOT NULL,
-    metodo_pago ENUM('efectivo','transaccion','tarjeta') NOT NULL DEFAULT 'efectivo',
+    metodo_pago ENUM('efectivo','transaccion','tarjeta','qr') NOT NULL DEFAULT 'efectivo',
     FOREIGN KEY (id_producto) REFERENCES producto(id),
     FOREIGN KEY (id_huesped) REFERENCES huesped(cedula),
     FOREIGN KEY (id_recepcionista) REFERENCES recepcionista(cedula));
@@ -59,7 +59,7 @@ CREATE TABLE ingreso_producto (
 CREATE TABLE ingreso_hospedaje (
     id_hospedaje INT NOT NULL,
     fecha DATE NOT NULL,
-    metodo_pago ENUM('efectivo','transaccion','tarjeta') NOT NULL DEFAULT 'efectivo'
+    metodo_pago ENUM('efectivo','transaccion','tarjeta','qr') NOT NULL DEFAULT 'efectivo'
     monto INT NOT NULL,
     id_recepcionista INT(100) NOT NULL,
     FOREIGN KEY (id_hospedaje) REFERENCES hospedaje(id),
