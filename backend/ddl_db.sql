@@ -38,7 +38,7 @@ CREATE TABLE contrasenia (
 
 CREATE TABLE retiro (
     id_retirante INT NOT NULL,
-    fecha DATE NOT NULL,
+    fecha TIMESTAMP NOT NULL,
     descripcion TEXT NOT NULL,
     monto INT NOT NULL,
     id_recepcionista INT NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE ingreso_producto (
     id_producto INT NOT NULL,
     id_huesped INT NOT NULL,
     id_recepcionista INT NOT NULL,
-    fecha DATE NOT NULL,
+    fecha TIMESTAMP NOT NULL,
     cantidad INT NOT NULL,
     monto INT NOT NULL,
     metodo_pago ENUM('efectivo','transaccion','tarjeta','qr') NOT NULL DEFAULT 'efectivo',
@@ -59,7 +59,7 @@ CREATE TABLE ingreso_producto (
 
 CREATE TABLE ingreso_hospedaje (
     id_hospedaje INT NOT NULL,
-    fecha DATE NOT NULL,
+    fecha TIMESTAMP NOT NULL,
     metodo_pago ENUM('efectivo','transaccion','tarjeta','qr') NOT NULL DEFAULT 'efectivo',
     monto INT NOT NULL,
     id_recepcionista INT NOT NULL,
