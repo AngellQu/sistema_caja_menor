@@ -1,12 +1,10 @@
 CREATE PROCEDURE contrasenia_correcta(IN correo VARCHAR(50), IN digito INT)
 BEGIN
     DECLARE resultado int;
-   
     SET resultado = (SELECT COUNT(*)
                      FROM recepcionista r
                      JOIN contrasenia c ON r.cedula = c.id
                      WHERE r.correo = correo AND c.digito = digito);
-
     IF resultado = 1 
     THEN
         SELECT 'true' AS resultado_final;
