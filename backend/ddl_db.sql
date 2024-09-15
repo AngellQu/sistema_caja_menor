@@ -67,5 +67,5 @@ CREATE TABLE ingreso_hospedaje (
     FOREIGN KEY (id_recepcionista) REFERENCES recepcionista(cedula));
 
 CREATE TABLE base (
-    fecha DATE,
-    saldo INT);
+    fecha TIMESTAMP NOT NULL,
+    saldo INT NOT NULL);
