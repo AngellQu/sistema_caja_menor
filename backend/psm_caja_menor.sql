@@ -18,7 +18,7 @@ BEGIN
     DELETE FROM ingreso_hospedaje;
     DELETE FROM ingreso_producto;
     DELETE FROM retiro;
-    INSERT INTO base VALUES (CURDATE(), monto);
+    INSERT INTO base VALUES (NOW(), monto);
 END;
 
 CREATE FUNCTION  calcular_saldo()
