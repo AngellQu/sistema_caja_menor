@@ -21,14 +21,6 @@ BEGIN
     INSERT INTO base VALUES (CURDATE(), monto);
 END;
 
-CREATE PROCEDURE establecer_base(monto int, fecha date)
-BEGIN
-    DELETE FROM ingreso_hospedaje;
-    DELETE FROM ingreso_producto;
-    DELETE FROM retiro;
-    INSERT INTO base VALUES (fecha, monto);
-END;
-
 CREATE FUNCTION  calcular_saldo()
 RETURNS int
 READ SQL DATA
