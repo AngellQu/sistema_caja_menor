@@ -1,13 +1,13 @@
 import DTOs.DTOs;
-import DTOs.RecepcionistaDTO;
+import DTOs.IngresoProductoDTO;
+import GestionMovientos.GestionMovimientos;
 import GestionMovientos.GestorRegistros;
-import Persistencia.DAOs.GenericsDAO;
-import Persistencia.DAOs.RecepcionistaDAO;
+import Presentador.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 	}
 
 }

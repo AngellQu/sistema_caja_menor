@@ -1,10 +1,15 @@
 package Persistencia.DAOs;
+
 import DTOs.DTOs;
 
-public interface GenericsDAO<T extends DTOs> {
+public interface GenericsDAO<T> extends DAOs<DTOs>{
+
+	public abstract Integer insertar(T dto);
+
+	public abstract Integer eliminar(T dto);
+
+	public abstract void consultar(T dto);
+
+	public abstract void actualizar(T dto);
 	
-	public Integer insertar(T dto);
-	public Integer eliminar(T dto);
-	public void consultar(T dto);
-	public void actualizar(T dto);
 }

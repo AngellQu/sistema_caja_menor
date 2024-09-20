@@ -4,4 +4,11 @@
   <artifactId>sistema_caja_menor</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>SistemaCajaMenor</name>
+  <dependencies>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.32</version>
+    </dependency>
+  </dependencies>  
 </project>
