@@ -1,16 +1,50 @@
-CREATE PROCEDURE contrasenia_correcta(IN correo VARCHAR(50), IN digito INT)
+CREATE FUNCTION contrasenia_correcta(correo VARCHAR(50), digito VARCHAR(50))
+RETURNS boolean
+READS SQL DATA
 BEGIN
-    DECLARE resultado int;
-    SET resultado = (SELECT COUNT(*)
-                     FROM recepcionista r
-                     JOIN contrasenia c ON r.cedula = c.id
-                     WHERE r.correo = correo AND c.digito = digito);
-    IF resultado = 1
+    IF 1 = (SELECT COUNT(*)
+            FROM recepcionista r
+            JOIN contrasenia c ON r.cedula = c.id
+            WHERE r.correo = correo AND c.digito = digito)
     THEN
-      SELECT 'true' AS resultado_final;
+      RETURN  TRUE;
     ELSE
-      SELECT 'false' AS resultado_final;
+      RETURN  FALSE;
     END IF;
+END;
+
+CREATE FUNCTION usuario_existencia(correo VARCHAR(50))
+RETURNS boolean
+READS SQL DATA
+BEGIN
+    IF 1 = (SELECT COUNT(*)
+	    FROM recepcionista r
+	    WHERE r.correo = correo)
+    THEN
+      RETURN TRUE;
+    ELSE
+      RETURN FALSE;
+    END IF;
+END;
+
+CREATE PROCEDURE autentificacion_usuario(IN correo VARCHAR(50), IN digito VARCHAR(50))
+BEGIN
+    principal:
+    BEGIN
+        IF NOT (SELECT usuario_existencia(correo))
+        THEN
+            SELECT 'usuario no existe' AS resultado;
+            LEAVE principal;
+        END IF;
+
+        IF NOT (SELECT contrasenia_correcta(correo, digito))
+        THEN
+            SELECT 'usuario o contrasenia incorrectos' AS resultado;
+            LEAVE principal;
+        END IF;
+       
+        SELECT 'true' AS resultado;
+    END principal;
 END;
 
 CREATE PROCEDURE establecer_base(monto int)
@@ -23,7 +57,7 @@ END;
 
 CREATE FUNCTION  calcular_saldo()
 RETURNS int
-READ SQL DATA
+READS SQL DATA
 BEGIN
     DECLARE resultado int;
 
@@ -93,9 +127,9 @@ BEGIN
     END IF;
 END;
 
-CREATE PROCEDURE eliminar_ingreso_hospedaje(id_usuario int)
+CREATE PROCEDURE eliminar_ingreso_hospedaje(id_recepcionista int)
 BEGIN
-    IF id_usuario = (SELECT id_recepcionista FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1);
+    IF id_recepcionista = (SELECT id_recepcionista FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1);
     THEN
       DELETE FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1;
       SELECT calcular_saldo() AS saldo;
