@@ -4,13 +4,13 @@ import DTOs.DTOs;
 
 public interface PresentadorInterfaz {
 
-	public abstract Integer insertarEntidad(String tipo);
+    Integer insertarEntidad(String tipo);
 
-	public abstract Integer consultarEntidad(String tipo);
+    Integer consultarEntidad(String tipo);
 
-	public abstract void actualizarEntidad(String tipo);
-
-	public abstract void eliminarEntidad(String tipo);
-
-	public abstract DTOs crearDTO(String tipo);
+    void actualizarEntidad(String tipo);
+    
+    void eliminarEntidad(String tipo);
+ 
+    DTOs crearDTO(String tipo);
 }

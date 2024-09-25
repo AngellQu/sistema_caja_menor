@@ -11,4 +11,5 @@ public interface GestionMovimientos {
 	public abstract void actualizarEntidad(DTOs dto);
 
 	public abstract void eliminarEntidad(DTOs dto);
+	
 }

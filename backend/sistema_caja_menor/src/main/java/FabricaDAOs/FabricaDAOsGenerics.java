@@ -18,7 +18,7 @@ public class FabricaDAOsGenerics implements FabricaDAOs {
 	}
 
 	@Override
-	public GenericsDAO<DTOs> getDao(String tipo) {
+	public GenericsDAO<DTOs> getDAO(String tipo) {
 		return (GenericsDAO<DTOs>) productosDAO.get(tipo);
 	}
 }

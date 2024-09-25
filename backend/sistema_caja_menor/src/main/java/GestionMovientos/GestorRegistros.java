@@ -10,7 +10,7 @@ public class GestorRegistros implements GestionMovimientos {
 
 	@Override
 	public Integer insertarEntidad(DTOs dto) {
-		GenericsDAO<DTOs> dao = fabricaDaos.getDao(dto.getClass().getSimpleName());
+		GenericsDAO<DTOs> dao = fabricaDaos.getDAO(dto.getClass().getSimpleName());
 		return dao.insertar(dto);
 	}
 

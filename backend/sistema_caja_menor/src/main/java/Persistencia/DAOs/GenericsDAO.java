@@ -2,7 +2,7 @@ package Persistencia.DAOs;
 
 import DTOs.DTOs;
 
-public interface GenericsDAO<T> extends DAOs<DTOs>{
+public interface GenericsDAO<T extends DTOs> extends DAOs<DTOs>{
 
 	public abstract Integer insertar(T dto);
 
