@@ -1,38 +1,89 @@
 package APIServlet;
 
+import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class APISistema extends HttpServlet {
+import org.apache.catalina.connector.Response;
 
+import Presentador.Presentador;
+import Presentador.PresentadorInterfaz;
+
+@WebServlet("/APISistema")
+public class APISistema extends HttpServlet {
+	private PresentadorInterfaz presentador = new Presentador();
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		super.doGet(req, resp);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		InputStream body = request.getInputStream();
+		try {
+			ByteArrayOutputStream resp = presentador.insertarEntidad(body);
+			response.setStatus(Response.SC_CREATED);
+			response.getOutputStream().write(resp.toByteArray());
+			response.flushBuffer();
+		} catch (SQLException e) {
+			ExceptionManagement.getErrorStatus(response, e);
+			response.getOutputStream().write(e.getMessage().getBytes());
+			response.flushBuffer();
+		}
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		InputStream body = request.getInputStream();
+		try {
+			ByteArrayOutputStream resp = presentador.eliminarEntidad(body);
+			response.setStatus(Response.SC_OK);
+			response.getOutputStream().write(resp.toByteArray());
+			response.flushBuffer();
+		} catch (SQLException e) {
+			ExceptionManagement.getErrorStatus(response, e);
+			response.getOutputStream().write(e.getMessage().getBytes());
+			response.flushBuffer();
+		}
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPut(req, resp);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		InputStream body = request.getInputStream();
+		try {
+			ByteArrayOutputStream resp = presentador.consultarEntidad(body);
+			response.setStatus(Response.SC_OK);
+			response.getOutputStream().write(resp.toByteArray());
+			response.flushBuffer();
+		} catch (SQLException e) {
+			ExceptionManagement.getErrorStatus(response, e);
+			response.getOutputStream().write(e.getMessage().getBytes());
+			response.flushBuffer();
+		}
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		InputStream body = request.getInputStream();
+		try {
+			ByteArrayOutputStream resp = presentador.actualizarEntidad(body);
+			response.setStatus(Response.SC_OK);
+			response.getOutputStream().write(resp.toByteArray());
+			response.flushBuffer();
+		} catch (SQLException e) {
+			ExceptionManagement.getErrorStatus(response, e);
+			response.getOutputStream().write(e.getMessage().getBytes());
+			response.flushBuffer();
+		}
 	}
 
 }

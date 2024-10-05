@@ -1,15 +1,16 @@
 package GestionMovientos;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.SQLException;
 
 public interface GestionMovimientos {
 
-	ByteArrayOutputStream insertarEntidad(String entidad);
+	ByteArrayOutputStream insertarEntidad(String entidad) throws SQLException;
 
-	ByteArrayOutputStream consultarEntidad(String entidad);
+	ByteArrayOutputStream consultarEntidad(String entidad) throws SQLException;
 
-	ByteArrayOutputStream  actualizarEntidad(String entidad);
+	ByteArrayOutputStream  actualizarEntidad(String entidad)throws SQLException;
 
-	ByteArrayOutputStream  eliminarEntidad(String entidad);
+	ByteArrayOutputStream  eliminarEntidad(String entidad)throws SQLException;
 
 }

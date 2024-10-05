@@ -16,12 +16,17 @@ public class FactoryGenericsDAO implements FactoryDAOs {
 		registrarDAO("IngresoProducto", IngresoProductoDAO.class);
 		registrarDAO("Retiro", RetiroDAO.class);
 		registrarDAO("Recepcionista", RecepcionistaDAO.class);
-		registrarDAO("Contrasenia ", ContraseniaDAO.class);
+		registrarDAO("Contrasenia", ContraseniaDAO.class);
+		registrarDAO("Base", BaseDAO.class);
+		registrarDAO("Hospedaje", HospedajeDAO.class);
+		registrarDAO("Huesped", HuespedDAO.class);
+		registrarDAO("Producto", ProductoDAO.class);
+		registrarDAO("Retirante", RetiranteDAO.class);
 	}
 
 	@Override
 	public GenericsDAO getDAO(String entidad) {
-		 return mapper.mapToDao(entidad, productosDAO.get(mapper.getTypeEntityString(entidad)));
+		return mapper.mapToDao(entidad, productosDAO.get(mapper.getTypeEntityString(entidad)));
 	}
 
 	@Override

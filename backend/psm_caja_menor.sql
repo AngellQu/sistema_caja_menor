@@ -149,6 +149,17 @@ BEGIN
     END IF;
 END;
 
+CREATE PROCEDURE actualizar_retirante(up_id int, up_nombre varchar(50), up_telefono varchar(10), up_direccion varchar(100))
+BEGIN
+	UPDATE retirante 
+	SET 
+	  nombre = COALESCE(up_nombre, nombre),
+	  telefono = COALESCE(up_telefono, telefono),
+	  direccion = COALESCE(up_direccion, direccion)
+    WHERE id = up_id;
+END;
+
+CREATE PROCEDURE actualizar_recepcionista()
 
 
 

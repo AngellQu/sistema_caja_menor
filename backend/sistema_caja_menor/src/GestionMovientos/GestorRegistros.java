@@ -1,6 +1,7 @@
 package GestionMovientos;
 
 import java.io.ByteArrayOutputStream;
+import java.sql.SQLException;
 
 import FabricaDAOs.FactoryDAOs;
 import FabricaDAOs.FactoryGenericsDAO;
@@ -13,26 +14,27 @@ public class GestorRegistros implements GestionMovimientos {
 	private MappingServices mapper = new Mapper();
 
 	@Override
-	public ByteArrayOutputStream insertarEntidad(String entidad) {
-		GenericsDAO dao = fabricaDaos.getDAO(entidad);
-		return mapper.mapToJsonStream(dao.insertar());
+	public ByteArrayOutputStream insertarEntidad(String entidad) throws SQLException {
+		return mapper.mapToJsonStream(getDAO(entidad).insertar());
 	}
 
 	@Override
-	public ByteArrayOutputStream consultarEntidad(String entidad) {
-		return null;
+	public ByteArrayOutputStream eliminarEntidad(String entidad) throws SQLException {
+		return mapper.mapToJsonStream(getDAO(entidad).eliminar());
 	}
 
 	@Override
-	public ByteArrayOutputStream actualizarEntidad(String entidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public ByteArrayOutputStream consultarEntidad(String entidad) throws SQLException {
+		return mapper.mapToJsonStream(getDAO(entidad).consultar());
 	}
 
 	@Override
-	public ByteArrayOutputStream eliminarEntidad(String entidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public ByteArrayOutputStream actualizarEntidad(String entidad) throws SQLException {
+		return mapper.mapToJsonStream(getDAO(entidad).actualizar());
+	}
+	
+	private GenericsDAO getDAO(String entidad) {
+		return fabricaDaos.getDAO(entidad);
 	}
 
 }

@@ -38,6 +38,17 @@ public class Mapper implements MappingServices {
 	}
 
 	@Override
+	public ByteArrayOutputStream mapToJsonStream(Boolean entidades) {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		try {
+			mapper.writeValue(result, entidades);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
 	public String getTypeEntityString(String entidad) {
 		JsonNode jsonNode;
 		try {
@@ -49,5 +60,4 @@ public class Mapper implements MappingServices {
 			return "tipo entidad no encontrada";
 		}
 	}
-
 }

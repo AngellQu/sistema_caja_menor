@@ -12,6 +12,8 @@ public interface MappingServices {
 
 	ByteArrayOutputStream mapToJsonStream(List<Map<String, Object>> entidades);
 
+	ByteArrayOutputStream mapToJsonStream(Boolean entidades);
+
 	String getTypeEntityString(String entidad);
 
 }

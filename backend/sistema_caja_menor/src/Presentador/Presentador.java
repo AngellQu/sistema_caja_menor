@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 import GestionMovientos.GestionMovimientos;
 import GestionMovientos.GestorRegistros;
@@ -13,26 +14,23 @@ public class Presentador implements PresentadorInterfaz {
 	private GestionMovimientos gestor = new GestorRegistros();
 
 	@Override
-	public ByteArrayOutputStream insertarEntidad(InputStream entidad) {
+	public ByteArrayOutputStream insertarEntidad(InputStream entidad) throws SQLException {
 		return gestor.insertarEntidad(getRequestToString(entidad));
 	}
 
 	@Override
-	public ByteArrayOutputStream consultarEntidad(InputStream entidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public ByteArrayOutputStream eliminarEntidad(InputStream entidad) throws SQLException {
+		return gestor.eliminarEntidad(getRequestToString(entidad));
 	}
 
 	@Override
-	public ByteArrayOutputStream actualizarEntidad(InputStream entidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public ByteArrayOutputStream consultarEntidad(InputStream entidad) throws SQLException {
+		return gestor.consultarEntidad(getRequestToString(entidad));
 	}
 
 	@Override
-	public ByteArrayOutputStream eliminarEntidad(InputStream entidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public ByteArrayOutputStream actualizarEntidad(InputStream entidad) throws SQLException {
+		return gestor.actualizarEntidad(getRequestToString(entidad));
 	}
 
 	private String getRequestToString(InputStream entidad) {
@@ -48,5 +46,4 @@ public class Presentador implements PresentadorInterfaz {
 		}
 		return stringEntidad.toString();
 	}
-
 }
