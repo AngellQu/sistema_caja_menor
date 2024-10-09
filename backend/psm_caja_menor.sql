@@ -159,7 +159,35 @@ BEGIN
     WHERE id = up_id;
 END;
 
-CREATE PROCEDURE actualizar_recepcionista()
+CREATE PROCEDURE actualizar_recepcionista(up_cedula int, up_nombre varchar(100), up_correo varchar(100), up_telefono varchar(10), up_direccion varchar(100))
+BEGIN
+	UPDATE recepcionista
+	SET
+	  nombre = COALESCE(up_nombre, nombre),
+	  correo = COALESCE(up_correo, correo),
+	  telefono =  COALESCE(up_telefono, telefono),
+	  direccion = COALESCE(up_direccion, direccion)
+	WHERE cedula = up_cedula; 
+END;
+
+CREATE PROCEDURE actualizar_producto(up_id int, up_nombre varchar(50), up_precio int)
+BEGIN
+	UPDATE producto
+	SET
+	  nombre = COALESCE(up_nombre, nombre),
+	  precio = COALESCE(up_precio, precio)
+	WHERE id = up_id;
+END;
+
+CREATE PROCEDURE actualizar_huesped(up_cedula int, up_nombre varchar(100), up_telefono varchar(10))
+BEGIN
+	UPDATE huesped
+	SET
+	  nombre = COALESCE(up_nombre, nombre),
+	  telefono = COALESCE(up_telefono, telefono)
+	WHERE cedula  = up_cedula;
+END;
+
 
 
 
