@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import persistence.dao.AbstractDataAcces;
+import model.dao.AbstractDataAcces;
 
 public class MappingServices {
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -45,7 +45,7 @@ public class MappingServices {
 			return tipoEntidad;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "tipo entidad no encontrada";
+			return "type not found";
 		}
 	}
 }

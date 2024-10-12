@@ -1,4 +1,4 @@
-package persistence.dao;
+package model.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,21 +10,22 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import persistence.MySqlConnection;
+import model.MySqlConnection;
+import model.ServiceLocator;
 
 public class RetirantesDAO implements AbstractDataAcces {
 	private Connection conn = MySqlConnection.getConn();
-	private Integer id;
+	private String id;
 	private String nombre;
 	private String telefono;
 	private String direccion;
 	
 	static {
-		RegistryDataAcces.register("Retirantes", RetirantesDAO.class);
+		ServiceLocator.getRegistry().register("Retirantes", RetirantesDAO.class);
 	}
 
 	@JsonCreator
-	public RetirantesDAO(@JsonProperty("id") Integer id, @JsonProperty("nombre") String nombre,
+	public RetirantesDAO(@JsonProperty("id") String id, @JsonProperty("nombre") String nombre,
 			@JsonProperty("direccion") String direccion, @JsonProperty("telefono") String telefono) {
 		this.id = id;
 		this.nombre = nombre;
@@ -36,11 +37,11 @@ public class RetirantesDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> insert() throws SQLException {
 		String sql = "insert into retirante values (?, ?, ?, ?)";
 		try (PreparedStatement stm = conn.prepareStatement(sql)) {
-			stm.setInt(1, id);
+			stm.setString(1, id);
 			stm.setString(2, nombre);
 			stm.setString(3, telefono);
 			stm.setString(4, direccion);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -50,8 +51,8 @@ public class RetirantesDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> delete() throws SQLException {
 		String sql = "delete from retirante where id = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql)) {
-			stm.setInt(1, id);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setString(1, id);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		} 
@@ -61,8 +62,8 @@ public class RetirantesDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> query() throws SQLException {
 		String sql = "select * from retirante where id = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql)) {
-			stm.setInt(1, id);
-			return AbstractDataAcces.result(stm.executeQuery());
+			stm.setString(1, id);
+			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -76,7 +77,7 @@ public class RetirantesDAO implements AbstractDataAcces {
 			stm.setObject(2, nombre);
 			stm.setObject(3, telefono);
 			stm.setObject(4, direccion);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}

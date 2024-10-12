@@ -1,13 +1,15 @@
-package persistence.dao;
+package model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class RegistryDataAcces {
+import model.dao.AbstractDataAcces;
+
+public class RegistryDataAcces {
 
 	private static Map<String, Class<? extends AbstractDataAcces>> records = new HashMap<>();
 
-	protected static void register(String type, Class<? extends AbstractDataAcces> daoClass) {
+	public void register(String type, Class<? extends AbstractDataAcces> daoClass) {
 		records.put(type, daoClass);
 	}
 

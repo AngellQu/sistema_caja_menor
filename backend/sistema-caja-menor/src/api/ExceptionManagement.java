@@ -18,6 +18,7 @@ public abstract class ExceptionManagement {
 		errorMessage.put("IllegalArgumentException", Response.SC_INTERNAL_SERVER_ERROR);
 		errorMessage.put("InvalidFormatException", Response.SC_BAD_REQUEST);
 		errorMessage.put("MismatchedInputException", Response.SC_BAD_REQUEST);
+		errorCode.put(401, Response.SC_UNAUTHORIZED);
 		errorCode.put(404, Response.SC_NOT_FOUND);
 		errorCode.put(405, Response.SC_METHOD_NOT_ALLOWED);
 		errorCode.put(1008, Response.SC_NOT_FOUND);

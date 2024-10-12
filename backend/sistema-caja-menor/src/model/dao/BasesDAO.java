@@ -1,4 +1,4 @@
-package persistence.dao;
+package model.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,14 +10,15 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import persistence.MySqlConnection;
+import model.MySqlConnection;
+import model.ServiceLocator;
 
 public class BasesDAO implements AbstractDataAcces {
 	private Connection conn = MySqlConnection.getConn();
 	private Integer saldo;
 
 	static {
-		RegistryDataAcces.register("Bases", BasesDAO.class);
+		ServiceLocator.getRegistry().register("Bases", BasesDAO.class);
 	}
 
 	@JsonCreator
@@ -30,7 +31,7 @@ public class BasesDAO implements AbstractDataAcces {
 		String sql = "call establecer_base(?)";
 		try (CallableStatement stm = conn.prepareCall(sql);) {
 			stm.setInt(1, saldo);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		} 
@@ -45,7 +46,7 @@ public class BasesDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> query() throws SQLException {
 		String sql = "select * from base order by fecha asc limit 1";
 		try (PreparedStatement stm = conn.prepareStatement(sql)) {
-			return AbstractDataAcces.result(stm.executeQuery());
+			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;
 		} 

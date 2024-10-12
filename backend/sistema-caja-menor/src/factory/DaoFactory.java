@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Map;
 
 import mapping.MappingServices;
-import persistence.dao.AbstractDataAcces;
-import persistence.dao.RegistryDataAcces;
+import model.RegistryDataAcces;
+import model.dao.AbstractDataAcces;
 
-public class FactoryGenericsDao {
+public class DaoFactory {
 
 	public static AbstractDataAcces getDAO(String data) throws ClassNotFoundException, IOException {
 		String typeName = MappingServices.getTypeEntityString(data);

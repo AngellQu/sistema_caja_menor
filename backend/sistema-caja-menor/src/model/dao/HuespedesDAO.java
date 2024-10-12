@@ -1,4 +1,4 @@
-package persistence.dao;
+package model.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,34 +10,35 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import persistence.MySqlConnection;
+import model.MySqlConnection;
+import model.ServiceLocator;
 
-public class ProductosDAO implements AbstractDataAcces {
+public class HuespedesDAO implements AbstractDataAcces {
 	private Connection conn = MySqlConnection.getConn();
-	private Integer id;
+	private String cedula;
 	private String nombre;
-	private Integer precio;
+	private String telefono;
 
 	static {
-		RegistryDataAcces.register("Productos", ProductosDAO.class);
+		ServiceLocator.getRegistry().register("Huespedes", HuespedesDAO.class);
 	}
 
 	@JsonCreator
-	public ProductosDAO(@JsonProperty("id") Integer id, @JsonProperty("nombre") String nombre,
-			@JsonProperty("precio") Integer precio) {
-		this.id = id;
+	public HuespedesDAO(@JsonProperty("cedula") String cedula, @JsonProperty("nombre") String nombre,
+			@JsonProperty("telefono") String telefono) {
+		this.cedula = cedula;
 		this.nombre = nombre;
-		this.precio = precio;
+		this.telefono = telefono;
 	}
 
 	@Override
 	public List<Map<String, Object>> insert() throws SQLException {
-		String sql = "insert into producto values(?,?,?)";
+		String sql = "insert into huesped values(?, ?, ?)";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setInt(1, id);
+			stm.setString(1, cedula);
 			stm.setString(2, nombre);
-			stm.setInt(3, precio);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setString(3, telefono);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -45,10 +46,10 @@ public class ProductosDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> delete() throws SQLException {
-		String sql = "delete from producto where id = ?";
+		String sql = "delete from huesped where cedula =  ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setInt(1, id);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setString(1, cedula);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -56,11 +57,10 @@ public class ProductosDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> query() throws SQLException {
-		String sql = "select * from producto where id = ? or nombre = ?";
+		String sql = "select * from huesped where cedula = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setObject(1, id);
-			stm.setObject(2, nombre);
-			return AbstractDataAcces.result(stm.executeQuery());
+			stm.setString(1, cedula);
+			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -68,14 +68,14 @@ public class ProductosDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> update() throws SQLException {
-		String sql = "call actualizar_producto(?,?,?)";
-		try (CallableStatement stm = conn.prepareCall(sql);) {
-			stm.setObject(1, id);
+		String sql = "call actualizar_huesped(?,?,?)";
+		try (CallableStatement stm = conn.prepareCall(sql)) {
+			stm.setObject(1, cedula);
 			stm.setObject(2, nombre);
-			stm.setObject(3, precio);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setObject(3, telefono);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
-		} 
+		}
 	}
 }

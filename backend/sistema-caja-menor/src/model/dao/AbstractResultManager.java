@@ -1,4 +1,4 @@
-package persistence.dao;
+package model.dao;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -8,17 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface AbstractDataAcces {
+class AbstractResultManager {
 
-	List<Map<String, Object>> insert() throws SQLException;
-
-	List<Map<String, Object>> delete() throws SQLException;
-
-	List<Map<String, Object>> query() throws SQLException;
-
-	List<Map<String, Object>> update() throws SQLException;
-
-	static List<Map<String, Object>> result(Integer filas) {
+	protected static List<Map<String, Object>> result(Integer filas) {
 		List<Map<String, Object>> result = new ArrayList<>();
 		Map<String, Object> operationResult = new HashMap<>();
 		if (filas > 0) {
@@ -31,7 +23,7 @@ public interface AbstractDataAcces {
 		return result;
 	}
 
-	static List<Map<String, Object>> result(ResultSet rs) throws SQLException {
+	protected static List<Map<String, Object>> result(ResultSet rs) throws SQLException {
 		List<Map<String, Object>> result = new ArrayList<>();
 		if (!rs.isBeforeFirst()) {
 			throw new SQLException("No se obtuvieron resultados", "NOT_FOUND", 404);
@@ -50,4 +42,5 @@ public interface AbstractDataAcces {
 		}
 		return result;
 	}
+
 }

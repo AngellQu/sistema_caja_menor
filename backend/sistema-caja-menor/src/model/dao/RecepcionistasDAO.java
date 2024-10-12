@@ -1,4 +1,4 @@
-package persistence.dao;
+package model.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,41 +10,45 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import persistence.MySqlConnection;
+import model.MySqlConnection;
+import model.ServiceLocator;
 
 public class RecepcionistasDAO implements AbstractDataAcces {
 	private Connection conn = MySqlConnection.getConn();
 	private String nombre;
-	private Integer cedula;
+	private String cedula;
 	private String correo;
 	private String direccion;
 	private String telefono;
+	private String contrasenia;
 
 	static {
-		RegistryDataAcces.register("Recepcionistas", RecepcionistasDAO.class);
+		ServiceLocator.getRegistry().register("Recepcionistas", RecepcionistasDAO.class);
 	}
 
 	@JsonCreator
 	public RecepcionistasDAO(@JsonProperty("nombre") String nombre, @JsonProperty("correo") String correo,
 			@JsonProperty("direccion") String direccion, @JsonProperty("telefono") String telefono,
-			@JsonProperty("cedula") Integer cedula) {
+			@JsonProperty("cedula") String cedula, @JsonProperty("contrasenia") String contrasenia) {
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.correo = correo;
 		this.direccion = direccion;
 		this.telefono = telefono;
+		this.contrasenia = ServiceLocator.getSecurity().createPasswordHash(contrasenia);
 	}
 
 	@Override
 	public List<Map<String, Object>> insert() throws SQLException {
-		String sql = "insert into recepcionista values (?, ?, ?, ?, ?)";
+		String sql = "insert into recepcionista values (?, ?, ?, ?, ?, ?)";
 		try (PreparedStatement stm = conn.prepareStatement(sql)) {
-			stm.setInt(1, cedula);
+			stm.setString(1, cedula);
 			stm.setString(2, nombre);
 			stm.setString(3, correo);
 			stm.setString(4, direccion);
 			stm.setString(5, telefono);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setString(6, contrasenia);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -54,8 +58,8 @@ public class RecepcionistasDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> delete() throws SQLException {
 		String sql = "delete from recepcionista where cedula = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setInt(1, cedula);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			stm.setString(1, cedula);
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -65,8 +69,8 @@ public class RecepcionistasDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> query() throws SQLException {
 		String sql = "select * from recepcionista where cedula = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setInt(1, cedula);
-			return AbstractDataAcces.result(stm.executeQuery());
+			stm.setString(1, cedula);
+			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;
 		}
@@ -81,7 +85,7 @@ public class RecepcionistasDAO implements AbstractDataAcces {
 			stm.setObject(3, correo);
 			stm.setObject(4, telefono);
 			stm.setObject(5, direccion);
-			return AbstractDataAcces.result(stm.executeUpdate());
+			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
 		}
