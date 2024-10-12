@@ -1,25 +1,10 @@
-CREATE FUNCTION contrasenia_correcta(correo VARCHAR(50), digito VARCHAR(50))
-RETURNS boolean
-READS SQL DATA
-BEGIN
-    IF 1 = (SELECT COUNT(*)
-            FROM recepcionista r
-            JOIN contrasenia c ON r.cedula = c.id
-            WHERE r.correo = correo AND c.digito = digito)
-    THEN
-      RETURN  TRUE;
-    ELSE
-      RETURN  FALSE;
-    END IF;
-END;
-
-CREATE FUNCTION usuario_existencia(correo VARCHAR(50))
+CREATE FUNCTION usuario_existencia(cedula varchar(20))
 RETURNS boolean
 READS SQL DATA
 BEGIN
     IF 1 = (SELECT COUNT(*)
 	    FROM recepcionista r
-	    WHERE r.correo = correo)
+	    WHERE r.cedula = cedula)
     THEN
       RETURN TRUE;
     ELSE
@@ -27,23 +12,19 @@ BEGIN
     END IF;
 END;
 
-CREATE PROCEDURE autentificacion_usuario(IN correo VARCHAR(50), IN digito VARCHAR(50))
+CREATE PROCEDURE obtener_usuario_hash(IN cedula varchar(20))
 BEGIN
     principal:
     BEGIN
-        IF NOT (SELECT usuario_existencia(correo))
+        IF NOT (SELECT usuario_existencia(cedula))
         THEN
-            SELECT 'usuario no existe' AS resultado;
+            SELECT 'false' AS resultado;
             LEAVE principal;
+        ELSE
+            SELECT contrasenia 
+            FROM recepcionista r
+            WHERE r.cedula = cedula;
         END IF;
-
-        IF NOT (SELECT contrasenia_correcta(correo, digito))
-        THEN
-            SELECT 'usuario o contrasenia incorrectos' AS resultado;
-            LEAVE principal;
-        END IF;
-       
-        SELECT 'true' AS resultado;
     END principal;
 END;
 
@@ -68,7 +49,7 @@ BEGIN
     RETURN resultado;
 END;
 
-CREATE PROCEDURE insertar_ingreso_hospedaje(metodo varchar(20),monto int, id_recepcionista int)
+CREATE PROCEDURE insertar_ingreso_hospedaje(metodo varchar(20),monto int, id_recepcionista varchar(20))
 BEGIN
     DECLARE saldo int;
     DECLARE id_hospedaje int;
@@ -83,7 +64,7 @@ BEGIN
     SELECT saldo;
 END;
 
-CREATE PROCEDURE insertar_ingreso_producto(nombre varchar(100), cantidad int, metodo_pago varchar(50), id_recepcionista int, id_huesped int)
+CREATE PROCEDURE insertar_ingreso_producto(nombre varchar(100), cantidad int, metodo_pago varchar(50), id_recepcionista varchar(20), id_huesped int)
 BEGIN
     DECLARE saldo int;
     DECLARE id_producto int;
@@ -99,7 +80,7 @@ BEGIN
     SELECT saldo;
 END;
 
-CREATE PROCEDURE insertar_retiro(id_retirante int, id_recepcionista int, descripcion text,  monto int)
+CREATE PROCEDURE insertar_retiro(id_retirante int, id_recepcionista varchar(20), descripcion text,  monto int)
 BEGIN
     DECLARE saldo int;
 
@@ -110,15 +91,9 @@ BEGIN
     SELECT saldo;
 END;
 
-CREATE PROCEDURE registrar_usuario(cedula int, nombre varchar(100), correo varchar(100), direccion varchar(100), telefono int, digito varchar(100))
+CREATE PROCEDURE eliminar_ingreso_producto(id_usuario varchar(20))
 BEGIN
-    INSERT INTO recepcionista VALUES(cedula, nombre, correo, direccion, telefono);
-    INSERT INTO contrasenia VALUES (cedula, digito);
-END;
-
-CREATE PROCEDURE eliminar_ingreso_producto(id_usuario int)
-BEGIN
-    IF id_usuario = (SELECT id_recepcionista FROM ingreso_producto ORDER BY fecha DESC LIMIT 1);
+    IF id_usuario = (SELECT id_recepcionista FROM ingreso_producto ORDER BY fecha DESC LIMIT 1)
     THEN
       DELETE FROM ingreso_producto ORDER BY fecha DESC LIMIT 1;
       SELECT calcular_saldo() AS saldo;
@@ -127,9 +102,9 @@ BEGIN
     END IF;
 END;
 
-CREATE PROCEDURE eliminar_ingreso_hospedaje(id_recepcionista int)
+CREATE PROCEDURE eliminar_ingreso_hospedaje(id_recepcionista varchar(20))
 BEGIN
-    IF id_recepcionista = (SELECT id_recepcionista FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1);
+    IF id_recepcionista = (SELECT id_recepcionista FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1)
     THEN
       DELETE FROM ingreso_hospedaje ORDER BY fecha DESC LIMIT 1;
       SELECT calcular_saldo() AS saldo;
@@ -138,9 +113,9 @@ BEGIN
     END IF;
 END;
 
-CREATE PROCEDURE eliminar_retiro(id_usuario int)
+CREATE PROCEDURE eliminar_retiro(id_recepcionista varchar(20))
 BEGIN
-    IF id_usuario = (SELECT id_recepcionista FROM retiro ORDER BY fecha DESC LIMIT 1);
+    IF id_recepcionista = (SELECT id_recepcionista FROM retiro ORDER BY fecha DESC LIMIT 1)
     THEN
       DELETE FROM retiro ORDER BY fecha DESC LIMIT 1;
       SELECT calcular_saldo() AS saldo;
@@ -149,7 +124,7 @@ BEGIN
     END IF;
 END;
 
-CREATE PROCEDURE actualizar_retirante(up_id int, up_nombre varchar(50), up_telefono varchar(10), up_direccion varchar(100))
+CREATE PROCEDURE actualizar_retirante(up_id varchar(30), up_nombre varchar(50), up_telefono varchar(10), up_direccion varchar(100))
 BEGIN
 	UPDATE retirante 
 	SET 
@@ -159,7 +134,7 @@ BEGIN
     WHERE id = up_id;
 END;
 
-CREATE PROCEDURE actualizar_recepcionista(up_cedula int, up_nombre varchar(100), up_correo varchar(100), up_telefono varchar(10), up_direccion varchar(100))
+CREATE PROCEDURE actualizar_recepcionista(up_cedula varchar(20), up_nombre varchar(100), up_correo varchar(100), up_telefono varchar(10), up_direccion varchar(100))
 BEGIN
 	UPDATE recepcionista
 	SET
@@ -179,7 +154,7 @@ BEGIN
 	WHERE id = up_id;
 END;
 
-CREATE PROCEDURE actualizar_huesped(up_cedula int, up_nombre varchar(100), up_telefono varchar(10))
+CREATE PROCEDURE actualizar_huesped(up_cedula varchar(20), up_nombre varchar(100), up_telefono varchar(10))
 BEGIN
 	UPDATE huesped
 	SET
