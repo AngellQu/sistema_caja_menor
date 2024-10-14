@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class JwtTokenProvider {
+class JwtTokenProvider {
 
 	private static byte[] secretByte;
 	private static SecretKey secretKey;

@@ -13,7 +13,7 @@ public class RegistryDataAcces {
 		records.put(type, daoClass);
 	}
 
-	public static Class<? extends AbstractDataAcces> getRegistry(String type) {
+	public static Class<? extends AbstractDataAcces> getRecord(String type) {
 		return records.get(type);
 	}
 }

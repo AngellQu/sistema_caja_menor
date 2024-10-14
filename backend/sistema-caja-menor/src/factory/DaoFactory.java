@@ -22,7 +22,7 @@ public class DaoFactory {
 	}
 
 	private static Class<? extends AbstractDataAcces> getDaoClass(String entidad) {
-		return RegistryDataAcces.getRegistry(entidad);
+		return RegistryDataAcces.getRecord(entidad);
 	}
 
 	private static void initClassForName(String entidad) throws ClassNotFoundException {
