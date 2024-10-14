@@ -29,6 +29,7 @@ public class HospedajesDAO implements AbstractDataAcces {
 	public HospedajesDAO(@JsonProperty("id") Integer id, @JsonProperty("idHuesped") String idHuesped,
 			@JsonProperty("habitacion") Integer habitacion, @JsonProperty("fechaIngreso") String fechaIngreso,
 			@JsonProperty("fechaSalida") String fechaSalida) {
+		this.id = id;
 		this.idHuesped = idHuesped;
 		this.habitacion = habitacion;
 		this.fechaIngreso = fechaIngreso;
@@ -77,12 +78,12 @@ public class HospedajesDAO implements AbstractDataAcces {
 	public List<Map<String, Object>> update() throws SQLException {
 		String sql = "call actualizar_hospedaje(?, ?, ?, ?, ?)";
 		try(CallableStatement stm = conn.prepareCall(sql)){
-			stm.setInt(1, id);
-			stm.setString(2, idHuesped);
-			stm.setInt(3, habitacion);
-			stm.setString(4, fechaIngreso);
-			stm.setString(5, fechaSalida);
-			return AbstractResultManager.result(stm.executeQuery());
+			stm.setObject(1, id);
+			stm.setObject(2, idHuesped);
+			stm.setObject(3, habitacion);
+			stm.setObject(4, fechaIngreso);
+			stm.setObject(5, fechaSalida);
+			return AbstractResultManager.result(stm.executeUpdate());
 		}catch(SQLException e){
 			throw e;
 		}
