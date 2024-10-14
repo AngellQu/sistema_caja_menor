@@ -33,12 +33,13 @@ public class IngresosHospedajesDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> insert() throws SQLException {
-		String sql = "call insertar_ingreso_hospedaje(?, ?, ?)";
+		String sql = "call insertar_ingreso_hospedaje(?, ?, ?, ?)";
 		idRecepcionista = ServiceLocator.getSecurity().getIdUserFromToken();
 		try (CallableStatement stm = conn.prepareCall(sql)) {
-			stm.setString(1, metodoPago);
-			stm.setInt(2, monto);
-			stm.setString(3, idRecepcionista);
+			stm.setInt(1, idHospedaje);
+			stm.setString(2, metodoPago);
+			stm.setInt(3, monto);
+			stm.setString(4, idRecepcionista);
 			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;

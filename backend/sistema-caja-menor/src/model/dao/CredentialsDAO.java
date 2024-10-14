@@ -2,6 +2,7 @@ package model.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,9 @@ public class CredentialsDAO implements AbstractDataAcces {
 		String sql = "call obtener_usuario_hash(?)";
 		try (CallableStatement stm = conn.prepareCall(sql)) {
 			stm.setString(1, cedula);
-			String result = stm.executeQuery().getString(1);
+		    ResultSet rs = stm.executeQuery();
+		    rs.next();
+		    String result = rs.getString(1);
 			return ServiceLocator.getSecurity().VerifyUserAuthorization(result, cedula, contrasenia);
 		} catch (SQLException e) {
 			throw e;
@@ -41,7 +44,7 @@ public class CredentialsDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> delete() throws SQLException {
-		throw new SQLException("operacion no disponible", "METHOD_NOT_ALLOWED", 405);
+		return AbstractResultManager.result(ServiceLocator.getSecurity().logOut());
 	}
 
 	@Override

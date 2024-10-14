@@ -26,7 +26,7 @@ public class DaoFactory {
 	}
 
 	private static void initClassForName(String entidad) throws ClassNotFoundException {
-		String pathClass = "persistence.dao." + entidad + "DAO";
+		String pathClass = "model.dao." + entidad + "DAO";
 		Class.forName(pathClass);
 	}
 }

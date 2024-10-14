@@ -19,11 +19,10 @@ public class ApiSystem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getHeader("Authorization");
 		String resource = request.getPathInfo();
-		if (token == null && !(resource.contains("recepcionistas"))) {
+		if (token == null && (!(resource.contains("recepcionistas")) && !(resource.contains("credentials")))) {
 			response.setStatus(Response.SC_UNAUTHORIZED);
 			response.flushBuffer();
 		} else {
@@ -37,10 +36,6 @@ public class ApiSystem extends HttpServlet {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
 				response.flushBuffer();
-			} catch (ClassNotFoundException e) {
-				ExceptionManagement.getErrorStatus(response, e);
-				response.getOutputStream().write(e.getMessage().getBytes());
-				response.flushBuffer();
 			} catch (Exception e) {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
@@ -50,16 +45,15 @@ public class ApiSystem extends HttpServlet {
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getHeader("Authorization");
 		if (token == null) {
 			response.setStatus(Response.SC_UNAUTHORIZED);
 			response.flushBuffer();
 		} else {
 			try {
-				String result = Presenter
-						.delete(IOJsonDataBuilder.urlToMapString(request.getParameterMap(), request.getPathInfo()), token);
+				String result = Presenter.delete(
+						IOJsonDataBuilder.urlToMapString(request.getParameterMap(),request.getPathInfo()),token);
 				response.setStatus(Response.SC_OK);
 				response.getOutputStream().write(IOJsonDataBuilder.getResponseToStream(result));
 				response.flushBuffer();
@@ -67,10 +61,6 @@ public class ApiSystem extends HttpServlet {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
 				response.flushBuffer();
-			} catch (ClassNotFoundException e) {
-				ExceptionManagement.getErrorStatus(response, e);
-				response.getOutputStream().write(e.getMessage().getBytes());
-				response.flushBuffer();
 			} catch (Exception e) {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
@@ -80,16 +70,15 @@ public class ApiSystem extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getHeader("Authorization");
 		if (token == null) {
 			response.setStatus(Response.SC_UNAUTHORIZED);
 			response.flushBuffer();
 		} else {
 			try {
-				String result = Presenter
-						.query(IOJsonDataBuilder.urlToMapString(request.getParameterMap(), request.getPathInfo()), token);
+				String result = Presenter.query(
+						IOJsonDataBuilder.urlToMapString(request.getParameterMap(), request.getPathInfo()), token);
 				response.setStatus(Response.SC_OK);
 				response.getOutputStream().write(IOJsonDataBuilder.getResponseToStream(result));
 				response.flushBuffer();
@@ -97,10 +86,6 @@ public class ApiSystem extends HttpServlet {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
 				response.flushBuffer();
-			} catch (ClassNotFoundException e) {
-				ExceptionManagement.getErrorStatus(response, e);
-				response.getOutputStream().write(e.getMessage().getBytes());
-				response.flushBuffer();
 			} catch (Exception e) {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
@@ -110,8 +95,7 @@ public class ApiSystem extends HttpServlet {
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getHeader("Authorization");
 		if (token == null) {
 			response.setStatus(Response.SC_UNAUTHORIZED);
@@ -119,15 +103,12 @@ public class ApiSystem extends HttpServlet {
 		} else {
 			InputStream body = request.getInputStream();
 			try {
-				String result = Presenter.update(IOJsonDataBuilder.getRequestToString(body, request.getPathInfo()), token);
+				String result = Presenter.update(IOJsonDataBuilder.getRequestToString(body, request.getPathInfo()),
+						token);
 				response.setStatus(Response.SC_OK);
 				response.getOutputStream().write(IOJsonDataBuilder.getResponseToStream(result));
 				response.flushBuffer();
 			} catch (SQLException e) {
-				ExceptionManagement.getErrorStatus(response, e);
-				response.getOutputStream().write(e.getMessage().getBytes());
-				response.flushBuffer();
-			} catch (ClassNotFoundException e) {
 				ExceptionManagement.getErrorStatus(response, e);
 				response.getOutputStream().write(e.getMessage().getBytes());
 				response.flushBuffer();

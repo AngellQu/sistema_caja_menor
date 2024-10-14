@@ -1,5 +1,6 @@
  package model.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import model.ServiceLocator;
 
 public class HospedajesDAO implements AbstractDataAcces {
 	private Connection conn = MySqlConnection.getConn();
+	private Integer id;
 	private String idHuesped;
 	private Integer habitacion;
 	private String fechaIngreso;
@@ -24,7 +26,7 @@ public class HospedajesDAO implements AbstractDataAcces {
 	}
 
 	@JsonCreator
-	public HospedajesDAO(@JsonProperty("idHuesped") String idHuesped,
+	public HospedajesDAO(@JsonProperty("id") Integer id, @JsonProperty("idHuesped") String idHuesped,
 			@JsonProperty("habitacion") Integer habitacion, @JsonProperty("fechaIngreso") String fechaIngreso,
 			@JsonProperty("fechaSalida") String fechaSalida) {
 		this.idHuesped = idHuesped;
@@ -73,6 +75,16 @@ public class HospedajesDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> update() throws SQLException {
-		throw new SQLException("operacion no disponible", "METHOD_NOT_ALLOWED", 405);
+		String sql = "call actualizar_hospedaje(?, ?, ?, ?, ?)";
+		try(CallableStatement stm = conn.prepareCall(sql)){
+			stm.setInt(1, id);
+			stm.setString(2, idHuesped);
+			stm.setInt(3, habitacion);
+			stm.setString(4, fechaIngreso);
+			stm.setString(5, fechaSalida);
+			return AbstractResultManager.result(stm.executeQuery());
+		}catch(SQLException e){
+			throw e;
+		}
 	}
 }
