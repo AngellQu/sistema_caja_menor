@@ -34,6 +34,7 @@ BEGIN
     DELETE FROM ingreso_producto;
     DELETE FROM retiro;
     INSERT INTO base VALUES (NOW(), monto);
+    SELECT calcular_saldo AS saldo;
 END;
 
 CREATE FUNCTION  calcular_saldo()
@@ -41,32 +42,23 @@ RETURNS int
 READS SQL DATA
 BEGIN
     DECLARE resultado int;
-
-    SET resultado = (COALESCE ((SELECT sum(monto) FROM ingreso_hospedaje), 0) +
-                     COALESCE ((SELECT sum(monto) FROM ingreso_producto), 0) +
+    SET resultado = (COALESCE ((SELECT sum(monto) FROM ingreso_hospedaje WHERE metodo_pago = 'efectivo'), 0) +
+                     COALESCE ((SELECT sum(monto) FROM ingreso_producto WHERE metodo_pago = 'efectivo'), 0) +
                     (SELECT saldo FROM base ORDER BY fecha DESC LIMIT 1) -
                      COALESCE ((SELECT sum(monto) FROM retiro), 0));
     RETURN resultado;
 END;
 
-CREATE PROCEDURE insertar_ingreso_hospedaje(metodo varchar(20),monto int, id_recepcionista varchar(20))
+CREATE PROCEDURE insertar_ingreso_hospedaje(id_hospedaje int,metodo_pago varchar(20),monto int, id_recepcionista varchar(20))
 BEGIN
-    DECLARE saldo int;
-    DECLARE id_hospedaje int;
+    INSERT INTO ingreso_hospedaje (id_hospedaje, fecha, metodo_pago, monto, id_recepcionista)
+    VALUES (id_hospedaje, NOW(), metodo_pago, monto, id_recepcionista);
 
-    SET id_hospedaje = (SELECT max(id) FROM hospedaje);
-
-    INSERT INTO ingreso_hospedaje
-    VALUES (id_hospedaje, now(), metodo, monto, id_recepcionista);
-
-    SET saldo = (SELECT calcular_saldo());
-
-    SELECT saldo;
+    SELECT calcular_saldo() AS saldo;
 END;
 
 CREATE PROCEDURE insertar_ingreso_producto(nombre varchar(100), cantidad int, metodo_pago varchar(50), id_recepcionista varchar(20), id_huesped int)
 BEGIN
-    DECLARE saldo int;
     DECLARE id_producto int;
     DECLARE monto int;
 
@@ -76,19 +68,15 @@ BEGIN
     INSERT INTO ingreso_producto (id_producto, id_huesped, id_recepcionista,fecha, cantidad, monto, metodo_pago)
     VALUES (id_producto, id_huesped, id_recepcionista, now(), cantidad, monto, metodo_pago);
 
-    SET saldo = (SELECT calcular_saldo());
-    SELECT saldo;
+    SELECT calcular_saldo() AS saldo;
 END;
 
 CREATE PROCEDURE insertar_retiro(id_retirante int, id_recepcionista varchar(20), descripcion text,  monto int)
 BEGIN
-    DECLARE saldo int;
-
     INSERT INTO retiro(id_retirante, id_recepcionista, fecha, descripcion, monto)
     VALUES (id_retirante, id_recepcionista, now(), descripcion, monto);
 
-    SET saldo = (SELECT calcular_saldo());
-    SELECT saldo;
+    SELECT calcular_saldo() AS saldo;
 END;
 
 CREATE PROCEDURE eliminar_ingreso_producto(id_usuario varchar(20))
@@ -163,7 +151,16 @@ BEGIN
 	WHERE cedula  = up_cedula;
 END;
 
-
+CREATE PROCEDURE actualizar_hospedaje(up_id int, up_id_huesped varchar(20), up_habitacion int, up_fecha_ingreso timestamp, up_fecha_salida timestamp) 
+BEGIN
+	UPDATE hospedaje
+	SET
+	  id_huesped = COALESCE(up_id_huesped, id_huesped),
+	  habitacion = COALESCE(up_habitacion, habitacion),
+	  fecha_ingreso = COALESCE(up_fecha_ingreso, fecha_ingreso),
+	  fecha_salida = COALESCE(up_fecha_salida, fecha_salida)
+    WHERE id = up_id;
+END;
 
 
 
