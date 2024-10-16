@@ -52,10 +52,9 @@ public class HospedajesDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> delete() throws SQLException {
-		String sql = "delete from hospedaje order by fecha_ingreso desc limit 1";
+		String sql = "delete from hospedaje where id = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setString(1, idHuesped);
-			stm.setString(2, fechaIngreso);
+			stm.setInt(1, id);
 			return AbstractResultManager.result(stm.executeUpdate());
 		} catch (SQLException e) {
 			throw e;
@@ -64,10 +63,11 @@ public class HospedajesDAO implements AbstractDataAcces {
 
 	@Override
 	public List<Map<String, Object>> query() throws SQLException {
-		String sql = "select * from hospedaje where id_huesped = ? or fecha_ingreso = ?";
+		String sql = "select * from hospedaje where id = ? or fecha_ingreso = ? or id_huesped = ?";
 		try (PreparedStatement stm = conn.prepareStatement(sql);) {
-			stm.setString(1, idHuesped);
+			stm.setInt(1, id);
 			stm.setString(2, fechaIngreso);
+			stm.setString(3, idHuesped);
 			return AbstractResultManager.result(stm.executeQuery());
 		} catch (SQLException e) {
 			throw e;

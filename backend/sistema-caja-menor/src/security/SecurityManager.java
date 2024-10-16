@@ -29,19 +29,15 @@ public class SecurityManager {
 	}
 
 	public Integer logOut() {
-		if (JwtTokenProvider.deleteSecretByte()) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return JwtTokenProvider.deleteSecretByte()? 1 : 0;
 	}
 
 	public String getIdUserFromToken() {
 		return JwtTokenProvider.getUserIdFromToken(token);
 	}
 
-	public static Boolean isthereASessionActivated() {
-		return JwtTokenProvider.isThereSecretByte();
+	public static Boolean isthereASessionActivated(String token) {
+		return JwtTokenProvider.getUserIdFromToken(token) != null;
 	}
 
 	public static void setToken(String token) {

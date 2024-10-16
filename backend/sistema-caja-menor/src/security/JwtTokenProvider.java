@@ -39,10 +39,6 @@ class JwtTokenProvider {
 		return (secretByte == null)? true: false;
 	}
 	
-	public static Boolean isThereSecretByte() {
-		return secretByte != null;
-	}
-	
 	private static void generateSecretByte() {
 		Random random = new Random();
 		int length = 64;

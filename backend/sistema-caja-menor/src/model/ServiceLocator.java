@@ -14,5 +14,4 @@ public class ServiceLocator {
 	public static SecurityManager getSecurity() {
 		return securityManager;
 	}
-	
 }

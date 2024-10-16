@@ -103,8 +103,7 @@ public class ApiSystem extends HttpServlet {
 		} else {
 			InputStream body = request.getInputStream();
 			try {
-				String result = Presenter.update(IOJsonDataBuilder.getRequestToString(body, request.getPathInfo()),
-						token);
+				String result = Presenter.update(IOJsonDataBuilder.getRequestToString(body,request.getPathInfo()),token);
 				response.setStatus(Response.SC_OK);
 				response.getOutputStream().write(IOJsonDataBuilder.getResponseToStream(result));
 				response.flushBuffer();

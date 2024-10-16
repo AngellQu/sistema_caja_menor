@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.connector.Response;
 
-public abstract class ExceptionManagement {
+class ExceptionManagement {
 	private static Map<Integer, Integer> errorCode = new HashMap<>();
 	private static Map<String, Integer> errorMessage = new HashMap<>();
 
@@ -18,6 +18,7 @@ public abstract class ExceptionManagement {
 		errorMessage.put("IllegalArgumentException", Response.SC_INTERNAL_SERVER_ERROR);
 		errorMessage.put("InvalidFormatException", Response.SC_BAD_REQUEST);
 		errorMessage.put("MismatchedInputException", Response.SC_BAD_REQUEST);
+		errorMessage.put("SignatureException", Response.SC_UNAUTHORIZED);
 		errorCode.put(401, Response.SC_UNAUTHORIZED);
 		errorCode.put(404, Response.SC_NOT_FOUND);
 		errorCode.put(405, Response.SC_METHOD_NOT_ALLOWED);

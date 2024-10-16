@@ -13,7 +13,13 @@ public class RegistryDataAcces {
 		records.put(type, daoClass);
 	}
 
-	public static Class<? extends AbstractDataAcces> getRecord(String type) {
-		return records.get(type);
+	public static Class<? extends AbstractDataAcces> getRecord(String entidad)throws ClassNotFoundException {
+		try {
+			String pathClass = "model.dao." + entidad + "DAO";
+			Class.forName(pathClass);
+		} catch (ClassNotFoundException e) {
+			throw new ClassNotFoundException("resource " + entidad + " not found");
+		}
+		return records.get(entidad);
 	}
 }
