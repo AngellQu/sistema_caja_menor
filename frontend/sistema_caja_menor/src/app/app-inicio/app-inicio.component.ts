@@ -26,7 +26,6 @@ import { TabViewModule } from 'primeng/tabview';
   `
 })
 export class AppInicioComponent {
-  
 currentDate: Date = new Date();
   saldo: string = "3450000"; 
 

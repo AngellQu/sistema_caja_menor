@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 
@@ -8,38 +8,63 @@ import { ButtonModule } from 'primeng/button';
   imports: [InputTextModule, ButtonModule],
   template: `
       <div>
-        <input  pInputText placeholder="Buscar" [style]="{
+        <input type="text" pInputText #inputText placeholder="Buscar" [style]="{
           'border-radius': '5px 0px 0px 5px',
-          'border-color':'white',
-          'margin-left':'50px'
+          'border-color': 'white',
+          'margin-left': '50px'
         }"/>
-        <p-button icon="pi pi-search"[style]="{
+        <p-button (onClick)="onSearch(inputText.value)" icon="pi pi-search" [style]="{
           'background-color': 'white',
-          'border-color':'white',
-          'margin-left':'1px',          
-          'color':'black',
+          'border-color': 'white',
+          'margin-left': '1px',
+          'color': 'black',
           'border-radius': '0px 5px 5px 0px'
         }"></p-button>
-        <button pButton icon="pi pi-plus-circle" type="button" label="Añadir" class="p-button-sm" [style]="{
-          'background-color':'yellow',
-          'margin-left':'500px',
-          'border-color':'yellow',
-          'color':'black'
-        }"></button>
-        <button pButton icon="pi pi-trash" type="button" label="Eliminar" class="p-button-sm" [style]="{
-          'background-color':'white',
-          'margin-left':'15px',
-          'border-color':'white',
-          'color':'black'
-        }"></button>
-        <button pButton icon="pi pi-download" type="button" label="Descargar" class="p-button-sm" [style]="{
-          'background-color':'white',
-          'margin-left':'15px',
-          'border-color':'white',
-          'color':'black'
-        }"></button>
+        <p-button (onClick)="onAdd()" icon="pi pi-plus-circle" label="Añadir" [style]="{
+          'background-color': 'yellow',
+          'margin-left': '500px',
+          'border-color': 'yellow',
+          'color': 'black'
+        }"></p-button>
+        <p-button (onClick)="onDelete()" icon="pi pi-trash" label="Eliminar" [style]="{
+          'background-color': 'white',
+          'margin-left': '15px',
+          'border-color': 'white',
+          'color': 'black'
+        }"></p-button>
+        <p-button (onClick)="onDownload()" icon="pi pi-download" label="Descargar" [style]="{
+          'background-color': 'white',
+          'margin-left': '15px',
+          'border-color': 'white',
+          'color': 'black'
+        }"></p-button>
       </div>
   `,
-  styles:``
+  styles: ``
 })
-export class AppOperationComponent {}
+export class AppOperationComponent {
+  @Output() add = new EventEmitter<boolean>();
+  @Output() delete = new EventEmitter<void>();
+  @Output() search = new EventEmitter<string>();
+  @Output() download = new EventEmitter<void>();
+  isVisible: boolean = false;
+
+  onAdd() {
+    this.isVisible = true;
+    this.add.emit(this.isVisible);
+  }
+
+  onDelete() {
+    this.delete.emit();
+  }
+
+  onSearch(value: string) {
+    this.search.emit(value);
+  }
+
+  onDownload() {
+    this.download.emit(); 
+  }
+}
+
+

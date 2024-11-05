@@ -4,15 +4,22 @@ import { TabViewModule } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import { AppInicioComponent } from '../app-inicio/app-inicio.component';
 import { AppHuespedComponent } from "../app-huesped/app-huesped.component";
+import { AppHospedajeComponent } from '../app-hospedaje/app-hospedaje.component';
+import { AppIngresoHospedajeComponent } from '../app-ingreso-hospedaje/app-ingreso-hospedaje.component';
+import { AppIngresoProductoComponent } from '../app-ingreso-producto/app-ingreso-producto.component';
 
 @Component({
   selector: 'app-app-tab',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+            CommonModule,
+            AppIngresoProductoComponent,
             TabViewModule,
             ButtonModule,
             AppInicioComponent,
-            AppHuespedComponent],
+            AppHuespedComponent,
+            AppHospedajeComponent,
+            AppIngresoHospedajeComponent],
   template: `
     <p-tabView [style]="{
           'position': 'fixed',
@@ -27,10 +34,13 @@ import { AppHuespedComponent } from "../app-huesped/app-huesped.component";
         <app-app-huesped></app-app-huesped>
       </p-tabPanel>
       <p-tabPanel header="Hospedaje">
+        <app-app-hospedaje></app-app-hospedaje>
       </p-tabPanel>
       <p-tabPanel header="Ingreso Hospedaje" >
+        <app-app-ingreso-hospedaje></app-app-ingreso-hospedaje>
       </p-tabPanel>
       <p-tabPanel header="Ingreso producto" >
+        <app-app-ingreso-producto></app-app-ingreso-producto>
       </p-tabPanel>
       <p-tabPanel header="Producto" >
       </p-tabPanel>
