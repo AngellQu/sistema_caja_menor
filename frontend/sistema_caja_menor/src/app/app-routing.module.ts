@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { provideRouter } from '@angular/router';
 import { AppLayoutComponent } from './app-layout/app-layout.component';
 import { AppSesionComponent } from './app-sesion/app-sesion.component';

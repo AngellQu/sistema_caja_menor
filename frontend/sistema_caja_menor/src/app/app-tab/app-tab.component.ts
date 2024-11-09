@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AppInicioComponent } from '../app-inicio/app-inicio.component';
 import { AppHuespedComponent } from "../app-huesped/app-huesped.component";
@@ -117,7 +117,7 @@ export class AppTabComponent {
     '/retiros'
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   onTabChange(event: any) {
     this.activeTabIndex = event.index;
