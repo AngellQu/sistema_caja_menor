@@ -1,34 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-app-inicio',
   standalone: true,
   imports: [CommonModule],
-  template:`
-        <p class="p1">{{ currentDate | date: 'shortDate'}}</p> 
-        <p class="p2">Total:{{ saldo }}</p>
+  template: `
+        <p class="date">{{ currentDate | date: 'd/M/yyyy'}}</p>
+        <p class="time">{{ currentTime | date: 'shortTime'}}</p>
+        <p class="total">Total:{{ saldo }}</p>
   `,
-  styles:`
-     .p1{
-      font-size: 35px;
+  styles: `
+     .date{
+      margin-left: 25px;
+      font-size: 50px;
       color: black;
       position: relative;
-      top: 320px;
+      top: 220px;
     }
-    .p2{
-      font-size: 45px;
+    .time{
+      margin-left: 25px;
+      font-size: 30px;
       color: black;
       position: relative;
-      top: 170px;
+      top: 180px;
+    }
+    .total{
+      font-size: 80px;
+      margin-left: 700px;
+      color: black;
+      position: relative;
+      top:20px;
     }
   `
 })
 export class AppInicioComponent {
-currentDate: Date = new Date();
-  saldo: string = "3450000"; 
+  currentTime?: Date;
+  currentDate?: Date;
+  saldo: string = "3450000";
+  timeIntervalId: any;
+  dateIntervalId: any;
 
-  setSaldo(saldo : string){
+  constructor() {
+    this.currentTime = new Date();
+    this.currentDate = new Date();
+  }
+
+  setSaldo(saldo: string) {
     this.saldo = saldo;
+  }
+
+  ngOnInit() {
+    this.timeIntervalId = setInterval(() => {
+      this.currentTime = new Date();
+    }, 1000);
+
+    this.dateIntervalId = setInterval(() => {
+      this.currentDate = new Date();
+    }, 3600000);
+
+    this.currentTime = new Date();
+    this.currentDate = new Date();
+  }
+
+  ngOnDestroy() {
+    if (this.timeIntervalId) {
+      clearInterval(this.timeIntervalId);
+    }
+    if (this.dateIntervalId) {
+      clearInterval(this.dateIntervalId);
+    }
   }
 }
