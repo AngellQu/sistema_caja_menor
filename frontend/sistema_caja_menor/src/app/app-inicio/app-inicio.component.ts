@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-app-inicio',
   standalone: true,
-  imports: [TabViewModule, CommonModule],
+  imports: [CommonModule],
   template:`
         <p class="p1">{{ currentDate | date: 'shortDate'}}</p> 
         <p class="p2">Total:{{ saldo }}</p>

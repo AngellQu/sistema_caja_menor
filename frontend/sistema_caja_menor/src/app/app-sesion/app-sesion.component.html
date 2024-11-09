@@ -1,0 +1,27 @@
+<div class="form">
+    <h3 style="color: black">Iniciar Sesión</h3>
+
+    <p-floatLabel [style]="{'margin-top': '25px'}">
+        <input class="cedulaInput" pInputText id="cedula" [formControl]="cedula" />
+        <label style="color: black" for="cedula">Cédula</label>
+    </p-floatLabel>
+    <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+        <small *ngIf="cedula.errors?.['required']">La cédula es obligatoria.</small>
+        <small *ngIf="cedula.errors?.['pattern']">La cédula debe contener solo números.</small>
+    </div>
+
+    <p-floatLabel [style]="{'margin-top': '25px'}">
+        <p-password [formControl]="contrasenia" [feedback]="false" [toggleMask]="true" />
+        <label style="color: black" for="contraseña">Contraseña</label>
+    </p-floatLabel>
+    <div *ngIf="contrasenia.invalid && (contrasenia.dirty || contrasenia.touched)">
+        <small *ngIf="contrasenia.errors?.['required']">La contraseña es obligatoria.</small>
+    </div>
+
+    <div style="margin-top: 35px">
+        <p-button label="Iniciar Sesión" icon="pi pi-sign-in"
+        [style]="{'background-color': 'blue','border-color':'blue', 'color': 'white', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
+    </div>
+</div>
+
+    

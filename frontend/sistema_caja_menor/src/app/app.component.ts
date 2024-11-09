@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { AppBarComponent } from './app-bar/app-bar.component';
-import { AppTabComponent } from './app-tab/app-tab.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AppBarComponent, AppTabComponent],
+  imports: [RouterModule],
   template:`
-   <app-app-bar></app-app-bar>
-   <app-app-tab></app-app-tab>
+   <router-outlet></router-outlet>
   `
 })
 export class AppComponent {

@@ -3,47 +3,49 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { AppOperationComponent } from '../app-operation/app-operation.component';
 import { TableModule } from 'primeng/table';
-import { Huesped } from '../models/Huesped';
 import { ButtonModule } from 'primeng/button';
+import { Producto } from '../models/Producto';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
-  selector: 'app-app-huesped',
+  selector: 'app-app-producto',
   standalone: true,
   imports: [AppOperationComponent,
     ReactiveFormsModule,
+    DropdownModule,
     CommonModule,
     FormsModule,
     TableModule,
     ButtonModule,
     InputTextModule,
     FloatLabelModule],
-  templateUrl: './app-huesped.component.html',
-  styleUrl: './app-huesped.component.css'
+  templateUrl: './app-producto.component.html',
+  styleUrl: './app-producto.component.css'
 })
-export class AppHuespedComponent {
-  cedula = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]);
+export class AppProductoComponent {
+  id = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]);
   nombre = new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]);
-  telefono = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]);
+  precio = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]);
 
-  huespedes: Huesped[] = [];
-  selectedHuespedes: Huesped[] = [];
+  Producto: Producto[] = [];
+  selectedProducto: Producto[] = [];
   isVisible: boolean = false;
 
   toggleSelectAll(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
-    this.selectedHuespedes = isChecked ? [...this.huespedes] : [];
+    this.selectedProducto = isChecked ? [...this.Producto] : [];
   }
 
   isAllSelected(): boolean {
-    return this.selectedHuespedes.length === this.huespedes.length && this.huespedes.length > 0;
+    return this.selectedProducto.length === this.Producto.length && this.Producto.length > 0;
   }
 
   cancelRecord() {
     this.isVisible = false;
+    this.id.reset();
     this.nombre.reset();
-    this.cedula.reset();
-    this.telefono.reset();
+    this.precio.reset();
   }
 }

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { AppOperationComponent } from '../app-operation/app-operation.component';
-import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { IngresoProducto } from '../models/IngresoProducto';
@@ -18,7 +17,6 @@ import { DropdownModule } from 'primeng/dropdown';
     DropdownModule,
     CommonModule,
     FormsModule,
-    TabViewModule,
     TableModule,
     ButtonModule,
     InputTextModule,

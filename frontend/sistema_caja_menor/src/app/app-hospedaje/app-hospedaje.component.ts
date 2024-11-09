@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, FormControl, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors} from '@angular/forms';
 import { AppOperationComponent } from '../app-operation/app-operation.component';
-import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { Hospedaje } from '../models/Hospedaje';
 import { ButtonModule } from 'primeng/button';
@@ -18,7 +17,6 @@ import { CalendarModule } from 'primeng/calendar';
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
-    TabViewModule,
     TableModule,
     ButtonModule,
     InputTextModule,

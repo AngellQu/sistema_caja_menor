@@ -1,14 +1,14 @@
 <app-app-operation (add)=" isVisible = $event "></app-app-operation>
 <div *ngIf="isVisible" class="form">
-    <h3 style="color: black">Registrar Huésped</h3>
+    <h3 style="color: black">Registrar Retirante</h3>
 
     <p-floatLabel [style]="{'margin-top': '10px'}">
-        <input pInputText id="cedula" [formControl]="cedula" />
-        <label style="color: black" for="cedula">Cédula</label>
+        <input pInputText id="id" [formControl]="id" />
+        <label style="color: black" for="cedula">Id</label>
     </p-floatLabel>
-    <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
-        <small *ngIf="cedula.errors?.['required']">La cédula es obligatoria.</small>
-        <small *ngIf="cedula.errors?.['pattern']">La cédula debe contener solo números.</small>
+    <div *ngIf="id.invalid && (id.dirty || id.touched)">
+        <small *ngIf="id.errors?.['required']">El Id es obligatoria.</small>
+        <small *ngIf="id.errors?.['pattern']">El Id debe contener solo números.</small>
     </div>
 
     <p-floatLabel [style]="{'margin-top': '25px'}">
@@ -29,6 +29,15 @@
         <small *ngIf="telefono.errors?.['pattern']">El teléfono debe ser un número.</small>
     </div>
 
+    <p-floatLabel [style]="{'margin-top': '25px'}">
+        <input pInputText id="direccion" [formControl]="direccion" />
+        <label style="color: black" for="direccion">Dirección</label>
+    </p-floatLabel>
+    <div *ngIf="direccion.invalid && (direccion.dirty || direccion.touched)">
+        <small *ngIf="direccion.errors?.['required']">La dirección es obligatoria.</small>
+        <small *ngIf="direccion.errors?.['pattern']">La dirección debe ser alfanúmerico.</small>
+    </div>
+
     <div style="margin-top: 35px">
         <p-button (onClick)="cancelRecord()" [text]="true" label="Cancelar" [rounded]="true"
             [style]="{'color': 'black', 'font-size': '10px', 'margin-left': '60px'}"></p-button>
@@ -36,7 +45,7 @@
             [style]="{'background-color': 'limegreen','border-color':'limegreen', 'color': 'black', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
     </div>
 </div>
-<p-table [(selection)]="selectedHuespedes" dataKey="cedula" [value]="huespedes" scrollable="true" scrollHeight="300px"
+<p-table [(selection)]="selectedRetirante" dataKey="id" [value]="retirante" scrollable="true" scrollHeight="300px"
     class="small-table" [style]="{
       'height':'300px',
       'width': '700px',
@@ -50,12 +59,13 @@
             <th>Cédula</th>
             <th>Nombre</th>
             <th>Teléfono</th>
+            <th>Dirección</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-huesped>
+    <ng-template pTemplate="body" let-retirante>
         <tr>
             <td style="display: flex;">
-                <p-tableCheckbox [value]="huesped" [style]="{
+                <p-tableCheckbox [value]="retirante" [style]="{
           'margin-right':'5px',
           'margin-top' : '-1px'
         }" />
@@ -67,9 +77,10 @@
           'padding': '0px'
            }" />
             </td>
-            <td>{{ huesped.cedula }}</td>
-            <td>{{ huesped.nombre }}</td>
-            <td>{{ huesped.telefono }}</td>
+            <td>{{ retirante.id}}</td>
+            <td>{{ retirante.nombre }}</td>
+            <td>{{ retirante.telefono }}</td>
+            <td>{{ retirante.direccion }}</td>
         </tr>
     </ng-template>
 </p-table>
@@ -77,4 +88,4 @@
     <input class="box" type="checkbox" (change)="toggleSelectAll($event)" [checked]="isAllSelected()" /> Seleccionar
     todo
 </p>
-<p class="p2">Resultado:{{huespedes.length}}</p>
+<p class="p2">Resultado:{{retirante.length}}</p>

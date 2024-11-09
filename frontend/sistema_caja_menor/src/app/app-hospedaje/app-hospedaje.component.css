@@ -1,4 +1,9 @@
 .form {
+  margin-top: -105px;
+  padding: 20px; 
+  border: 1px solid #ccc; 
+  border-radius: 8px; 
+  width: 300px;
   position: absolute;
   display: flex;
   flex-direction: column;
