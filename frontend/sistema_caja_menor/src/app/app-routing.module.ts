@@ -13,6 +13,7 @@ import { AppRetiranteComponent } from './app-retirante/app-retirante.component';
 import { AppRetiroComponent } from './app-retiro/app-retiro.component';
 
 export const routes: Routes = [
+  { path: 'sesion', component: AppSesionComponent },
   {
     path: '',
     component: AppLayoutComponent,
@@ -21,7 +22,7 @@ export const routes: Routes = [
         path: '',
         component: AppTabComponent,
         children: [
-          { path: 'inicio', component: AppInicioComponent },
+          { path: '', component: AppInicioComponent },
           { path: 'huespedes', component: AppHuespedComponent },
           { path: 'hospedajes', component: AppHospedajeComponent },
           { path: 'ingresos-hospedajes', component: AppIngresoHospedajeComponent },
@@ -32,7 +33,7 @@ export const routes: Routes = [
         ]
       }]
   },
-  { path: 'sesion', component: AppSesionComponent }
+  
 ];
 
 export const appRoutingProviders = [

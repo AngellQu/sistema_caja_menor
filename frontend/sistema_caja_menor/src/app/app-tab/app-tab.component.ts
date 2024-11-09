@@ -91,7 +91,7 @@ import { AppRetiroComponent } from '../app-retiro/app-retiro.component';
    :host ::ng-deep .p-tabview-nav {
       background-color: #7CA49F;
     }
-    :host ::ng-deep .p-tabview .p-tabview-panels {
+   :host ::ng-deep .p-tabview .p-tabview-panels {
       background: #EDEAEA;
       width: 100vw;
       height: 100vh;
@@ -107,7 +107,7 @@ export class AppTabComponent {
   activeTabIndex: number = 0;
 
   tabRoutes = [
-    '/inicio',
+    '',
     '/huespedes',
     '/hospedajes',
     '/ingresos-hospedajes',
