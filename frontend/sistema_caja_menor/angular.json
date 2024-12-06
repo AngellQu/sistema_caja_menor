@@ -15,6 +15,7 @@
           "options": {
             "outputPath": "dist/sistema_caja_menor",
             "index": "src/index.html",
+            "baseHref": "/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
