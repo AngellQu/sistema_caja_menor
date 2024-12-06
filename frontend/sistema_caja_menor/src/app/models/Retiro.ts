@@ -1,11 +1,11 @@
 export class Retiro {
     idRetirante: string;
-    fecha: Date;
+    fecha?: string;
     descripcion: string;
-    monto: number;
-    idRecepcionista: string;
+    monto: string;
+    idRecepcionista?: string;
 
-    constructor(idRetirante: string, fecha: Date, descripcion: string, monto: number, idRecepcionista: string) {
+    constructor(idRetirante: string, descripcion: string, monto: string, idRecepcionista?: string, fecha?: string) {
         this.idRetirante = idRetirante
         this.fecha = fecha
         this.descripcion = descripcion

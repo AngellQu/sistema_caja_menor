@@ -18,10 +18,10 @@ BEGIN
     BEGIN
         IF NOT (SELECT usuario_existencia(cedula))
         THEN
-            SELECT 'false' AS resultado;
+            SELECT 'false' AS contrasenia;
             LEAVE principal;
         ELSE
-            SELECT contrasenia 
+            SELECT contrasenia, nombre
             FROM recepcionista r
             WHERE r.cedula = cedula;
         END IF;
@@ -37,7 +37,7 @@ BEGIN
     SELECT calcular_saldo AS saldo;
 END;
 
-CREATE FUNCTION  calcular_saldo()
+CREATE FUNCTION calcular_saldo()
 RETURNS int
 READS SQL DATA
 BEGIN
@@ -161,6 +161,13 @@ BEGIN
 	  fecha_salida = COALESCE(up_fecha_salida, fecha_salida)
     WHERE id = up_id;
 END;
+
+CREATE PROCEDURE eliminar_hospedaje()
+BEGIN
+	DELETE FROM hospedaje ORDER BY fecha DESC LIMIT 1;
+    ALTER TABLE hospedaje auto_increment = (SELECT id FROM hospedaje ORDER BY DESC LIMIT 1);
+END;
+
 
 
 

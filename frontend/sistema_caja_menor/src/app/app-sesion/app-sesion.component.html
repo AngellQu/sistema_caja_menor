@@ -14,8 +14,9 @@
         </div>
 
         <div style="margin-top: 20px">
-            <p-button label="Iniciar Sesión"
+            <p-button label="Iniciar Sesión" (onClick)="logIn()"
                 [style]="{'background-color': '#007bff','border-color':'#007bff', 'color': 'white', 'font-size': '20px', 'width':'370px', 'height': '55px'}"></p-button>
         </div>
     </div>
 </div>
+<p-toast position="top-center"/>

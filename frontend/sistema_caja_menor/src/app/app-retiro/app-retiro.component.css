@@ -22,7 +22,7 @@
 }
 
 .p2 {
-    margin-top: -35px;
+    margin-top: 20px;
     margin-left: 950px;
 }
 
@@ -37,4 +37,8 @@ td {
 th {
     text-align: center;
     font-size: 12px
+}
+
+::ng-deep .p-datatable td {
+    text-align: center;
 }

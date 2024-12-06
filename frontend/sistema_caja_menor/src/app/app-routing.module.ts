@@ -33,7 +33,6 @@ export const routes: Routes = [
         ]
       }]
   },
-  
 ];
 
 export const appRoutingProviders = [

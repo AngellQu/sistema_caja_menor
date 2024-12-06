@@ -47,11 +47,9 @@ export class AppOperationComponent {
   @Output() delete = new EventEmitter<void>();
   @Output() search = new EventEmitter<string>();
   @Output() download = new EventEmitter<void>();
-  isVisible: boolean = false;
 
   onAdd() {
-    this.isVisible = true;
-    this.add.emit(this.isVisible);
+    this.add.emit(true);
   }
 
   onDelete() {

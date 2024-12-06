@@ -1,21 +1,24 @@
 export class IngresoProducto {
-    idProducto?: number;
-    cantidad?: number;
+    nombre: string
+    cantidad: string;
+    metodoPago: string;
+    idHuesped: string;
     monto?: number;
-    metodoPago?: string;
-    fecha?: Date;
-    idHuesped?: string;
+    fecha?: string;
+    idProducto?: number;
     idRecepcionista?: string;
     
     constructor(
-        idProducto: number,
+        nombre: string,
+        cantidad: string,
+        metodoPago: string,
         idHuesped: string,
-        idRecepcionista: string,
-        fecha: Date,
-        cantidad: number,
-        monto: number,
-        metodoPago: string
+        fecha?: string,
+        monto?: number,
+        idProducto?: number,
+        idRecepcionista? : string,
     ) {
+        this.nombre = nombre;
         this.idProducto = idProducto;
         this.idHuesped = idHuesped;
         this.idRecepcionista = idRecepcionista;

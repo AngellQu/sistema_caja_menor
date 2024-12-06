@@ -1,51 +1,117 @@
-<app-app-operation (add)="isVisible = $event"></app-app-operation>
-<div *ngIf="isVisible" class="form">
-  <h3 style="color: black">Registrar Hospedaje</h3>
+<app-app-operation (add)="isVisible = $event" (search)="getHospedajeByIdHuesped($event)" (delete)="deleteHospedaje()"
+  (download)="exportToExcel()" />
 
-  <p-floatLabel [style]="{'margin-top': '15px'}">
-    <input pInputText id="idHuesped" [formControl]="idHuesped" [style]="{'width': '245px'}" />
-    <label style="color: black" for="nombre">Id Huésped</label>
-  </p-floatLabel>
+<p-dialog [(visible)]="isVisible" [modal]="true" header="Registrar Hospedaje">
+  <div style="margin-top: 20px">
+    <p-floatLabel [style]="{'margin-top': '15px'}">
+      <input pInputText id="idHuesped" [formControl]="idHuesped" [style]="{'width': '245px'}" />
+      <label style="color: black" for="nombre">Id Huésped</label>
+    </p-floatLabel>
+  </div>
   <div *ngIf="idHuesped.invalid && (idHuesped.dirty || idHuesped.touched)">
     <small *ngIf="idHuesped.errors?.['required']">El Id del huésped es obligatorio.</small>
     <small *ngIf="idHuesped.errors?.['pattern']">El Id del huésped debe ser numérico.</small>
   </div>
 
-  <p-floatLabel [style]="{'margin-top': '25px'}">
-    <input pInputText id="habitacion" [formControl]="habitacion" [style]="{'width': '245px'}" />
-    <label style="color: black" for="habitacion">Habitación</label>
-  </p-floatLabel>
+  <div style="margin-top: 25px">
+    <p-floatLabel [style]="{'margin-top': '25px'}">
+      <input pInputText id="habitacion" [formControl]="habitacion" [style]="{'width': '245px'}" />
+      <label style="color: black" for="habitacion">Habitación</label>
+    </p-floatLabel>
+  </div>
   <div *ngIf="habitacion.invalid && (habitacion.dirty || habitacion.touched)">
     <small *ngIf="habitacion.errors?.['required']">la habitacion es obligatorio.</small>
     <small *ngIf="habitacion.errors?.['pattern']">la habitacion debe ser numérico.</small>
   </div>
 
-  <p-floatLabel [style]="{ 'margin-top': '25px' }">
-    <p-calendar [formControl]="fechaIngreso" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
-    <label for="fechaIngreso" style="color: black">Fecha Ingreso</label>
-  </p-floatLabel>
+  <div style="margin-top: 25px">
+    <p-floatLabel [style]="{ 'margin-top': '25px' }">
+      <p-calendar appendTo="body" [formControl]="fechaIngreso" [iconDisplay]="'input'" [showIcon]="true"
+        inputId="icondisplay" />
+      <label for="fechaIngreso" style="color: black">Fecha Ingreso</label>
+    </p-floatLabel>
+  </div>
   <div *ngIf="fechaIngreso.invalid && (fechaIngreso.dirty || fechaIngreso.touched)" style="margin-left: 10px;">
     <small *ngIf="fechaIngreso.errors?.['required']">la fecha de ingreso es obligatorio.</small>
-    <small *ngIf="fechaIngreso.errors?.['fechaInvalida']">la fecha de ingreso debe ser menor que la fecha de salida</small>
+    <small *ngIf="fechaIngreso.errors?.['fechaInvalida']">la fecha de ingreso debe ser menor que la fecha de
+      salida</small>
   </div>
 
-  <p-floatLabel [style]="{'margin-top': '25px'}">
-    <p-calendar [formControl]="fechaSalida" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-      [style]="{'font-size':'10px'}" />
-    <label style="color: black" for="fechaSalida">Fecha Salida</label>
-  </p-floatLabel>
+  <div style="margin-top: 25px">
+    <p-floatLabel [style]="{'margin-top': '25px'}">
+      <p-calendar appendTo="body" [formControl]="fechaSalida" [iconDisplay]="'input'" [showIcon]="true"
+        inputId="icondisplay" [style]="{'font-size':'10px'}" />
+      <label style="color: black" for="fechaSalida">Fecha Salida</label>
+    </p-floatLabel>
+  </div>
   <div *ngIf="fechaSalida.invalid && (fechaSalida.dirty || fechaSalida.touched)" style="margin-left: 10px;">
     <small *ngIf="fechaSalida.errors?.['required']">la fecha de salida es obligatorio.</small>
-    <small *ngIf="fechaSalida.errors?.['fechaInvalida']">la fecha de salida debe ser mayor que la fecha de ingreso</small>
+    <small *ngIf="fechaSalida.errors?.['fechaInvalida']">la fecha de salida debe ser mayor que la fecha de
+      ingreso</small>
   </div>
 
   <div style="margin-top: 25px">
     <p-button (onClick)="cancelRecord()" [text]="true" label="Cancelar" [rounded]="true"
       [style]="{'color': 'black', 'font-size': '10px', 'margin-left': '60px'}"></p-button>
-    <p-button label="Guardar" icon="pi pi-save" [rounded]="true"
+    <p-button (onClick)="createHospedaje()" label="Guardar" icon="pi pi-save" [rounded]="true"
       [style]="{'background-color': 'limegreen','border-color':'limegreen', 'color': 'black', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
   </div>
-</div>
+</p-dialog>
+
+<p-dialog [(visible)]="isVisibleUpdate" [modal]="true" header="Modificar Hospedaje">
+
+  <div style="margin-top: 20px">
+    <p-floatLabel>
+      <input pInputText id="idHuesped" [formControl]="idHuesped" />
+      <label style="color: black" for="cedula">Id Huésped</label>
+    </p-floatLabel>
+  </div>
+  <div *ngIf="idHuesped && (idHuesped.dirty || idHuesped.touched)">
+    <small *ngIf="idHuesped.errors?.['pattern']">El Id del huésped debe ser numérico.</small>
+  </div>
+
+  <div style="margin-top: 25px">
+    <p-floatLabel>
+      <input pInputText id="habitacion" [formControl]="habitacion" [style]="{'width': '245px'}" />
+      <label style="color: black" for="habitacion">Habitación</label>
+    </p-floatLabel>
+  </div>
+  <div *ngIf="habitacion && (habitacion.dirty || habitacion.touched)">
+    <small *ngIf="habitacion.errors?.['pattern']">La habitación debe ser numérica.</small>
+  </div>
+
+  <div style="margin-top: 25px">
+    <p-floatLabel>
+      <p-calendar [formControl]="fechaIngreso" appendTo="body" [iconDisplay]="'input'" [showIcon]="true"
+        inputId="icondisplay" />
+      <label for="fechaIngreso" style="color: black">Fecha Ingreso</label>
+    </p-floatLabel>
+  </div>
+  <div *ngIf="fechaIngreso && (fechaIngreso.dirty || fechaIngreso.touched)" style="margin-left: 10px;">
+    <small *ngIf="fechaIngreso.errors?.['fechaInvalida']">La fecha de ingreso debe ser menor que la fecha de
+      salida</small>
+  </div>
+
+  <div style="margin-top: 25px">
+    <p-floatLabel>
+      <p-calendar [formControl]="fechaSalida" appendTo="body" [iconDisplay]="'input'" [showIcon]="true"
+        inputId="icondisplay" [style]="{'font-size':'10px'}" />
+      <label style="color: black" for="fechaSalida">Fecha Salida</label>
+    </p-floatLabel>
+  </div>
+  <div *ngIf="fechaSalida && (fechaSalida.dirty || fechaSalida.touched)" style="margin-left: 10px;">
+    <small *ngIf="fechaSalida.errors?.['fechaInvalida']">La fecha de salida debe ser mayor que la fecha de
+      ingreso</small>
+  </div>
+
+  <div style="margin-top: 25px">
+    <p-button (onClick)="cancelRecord()" [text]="true" label="Cancelar" [rounded]="true"
+      [style]="{'color': 'black', 'font-size': '10px', 'margin-left': '60px'}"></p-button>
+    <p-button (onClick)="updateHospedaje()" label="Actualizar" [rounded]="true"
+      [style]="{'background-color': 'limegreen','border-color':'limegreen', 'color': 'black', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
+  </div>
+</p-dialog>
+
 <p-table [(selection)]="selectedHospedajes" dataKey="id" [value]="hospedajes" scrollable="true" scrollHeight="300px"
   class="small-table" [style]="{
               'height':'300px',
@@ -56,6 +122,7 @@
               'margin-left': '280px'}">
   <ng-template pTemplate="header">
     <tr>
+      <th><p-tableHeaderCheckbox /></th>
       <th>Acción</th>
       <th>Id</th>
       <th>Id Huésped</th>
@@ -66,16 +133,14 @@
   </ng-template>
   <ng-template pTemplate="body" let-hospedaje>
     <tr>
-      <td style="display: flex;">
-        <p-tableCheckbox [value]="hospedajes" [style]="{
-                  'margin-right':'5px',
-                  'margin-top' : '-1px'
-                }" />
-        <p-button icon="pi pi-pen-to-square" [text]="true" class="p-button-text" [style]="{ 
+      <td>
+        <p-tableCheckbox [value]="hospedaje" />
+      </td>
+      <td>
+        <p-button icon="pi pi-pen-to-square" (onClick)="editHospedaje(hospedaje)" [text]="true" class="p-button-text"
+          [style]="{ 
                   'color': 'orange',
-                  'margin-top': '0', 
-                  'border-radius': '5px', 
-                  'margin-left':'5px',
+                  'border-radius': '5px',
                   'padding': '0px'
                    }" />
       </td>
@@ -87,7 +152,6 @@
     </tr>
   </ng-template>
 </p-table>
-<p class="p1">
-  <input class="box" type="checkbox" (change)="toggleSelectAll($event)" [checked]="isAllSelected()" /> Seleccionar todo
-</p>
+<p-toast position="bottom-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>
 <p class="p2">Resultado:{{hospedajes.length}}</p>

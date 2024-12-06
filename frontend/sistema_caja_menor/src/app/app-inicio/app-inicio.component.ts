@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   `,
   styles: `
      .date{
-      margin-left: 25px;
+      margin-left: 18px;
       font-size: 50px;
       color: black;
       position: relative;
@@ -37,7 +37,8 @@ import { CommonModule } from '@angular/common';
 export class AppInicioComponent {
   currentTime?: Date;
   currentDate?: Date;
-  saldo: string = "3450000";
+  saldo?: string;
+  private readonly SALDO_KEY = "saldo";
   timeIntervalId: any;
   dateIntervalId: any;
 
@@ -47,10 +48,14 @@ export class AppInicioComponent {
   }
 
   setSaldo(saldo: string) {
-    this.saldo = saldo;
+    const saldoFormateado = Number(saldo).toLocaleString('es-CO', {
+      maximumFractionDigits: 0,
+    });
+    localStorage.setItem(this.SALDO_KEY, saldoFormateado);
   }
 
   ngOnInit() {
+    this.saldo = localStorage.getItem(this.SALDO_KEY) ?? '';
     this.timeIntervalId = setInterval(() => {
       this.currentTime = new Date();
     }, 1000);

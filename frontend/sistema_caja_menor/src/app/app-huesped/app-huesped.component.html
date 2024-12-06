@@ -1,29 +1,34 @@
-<app-app-operation (add)=" isVisible = $event "></app-app-operation>
-<div *ngIf="isVisible" class="form">
-    <h3 style="color: black">Registrar Huésped</h3>
+<app-app-operation (add)=" isVisible = $event " (search)="getHuespedByCedulaOrName($event)" (delete)="deleteHuesped()" (download)="exportToExcel()"></app-app-operation>
 
-    <p-floatLabel [style]="{'margin-top': '10px'}">
-        <input pInputText id="cedula" [formControl]="cedula" />
-        <label style="color: black" for="cedula">Cédula</label>
-    </p-floatLabel>
+<p-dialog [(visible)]="isVisible" [modal]="true" header="Registrar Huésped">
+    <div style="margin-top: 20px">
+        <p-floatLabel [style]="{'margin-top': '10px'}">
+            <input pInputText id="cedula" [formControl]="cedula" />
+            <label style="color: black" for="cedula">Cédula</label>
+        </p-floatLabel>
+    </div>
     <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
         <small *ngIf="cedula.errors?.['required']">La cédula es obligatoria.</small>
         <small *ngIf="cedula.errors?.['pattern']">La cédula debe contener solo números.</small>
     </div>
 
-    <p-floatLabel [style]="{'margin-top': '25px'}">
-        <input pInputText id="nombre" [formControl]="nombre" />
-        <label style="color: black" for="nombre">Nombre</label>
-    </p-floatLabel>
+    <div style="margin-top: 25px">
+        <p-floatLabel [style]="{'margin-top': '25px'}">
+            <input pInputText id="nombre" [formControl]="nombre" />
+            <label style="color: black" for="nombre">Nombre</label>
+        </p-floatLabel>
+    </div>
     <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
         <small *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</small>
         <small *ngIf="nombre.errors?.['pattern']">El nombre debe contener solo letras.</small>
     </div>
 
-    <p-floatLabel [style]="{'margin-top': '25px'}">
-        <input pInputText id="telefono" [formControl]="telefono" />
-        <label style="color: black" for="telefono">Teléfono</label>
-    </p-floatLabel>
+    <div style="margin-top: 25px">
+        <p-floatLabel [style]="{'margin-top': '25px'}">
+            <input pInputText id="telefono" [formControl]="telefono" />
+            <label style="color: black" for="telefono">Teléfono</label>
+        </p-floatLabel>
+    </div>
     <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
         <small *ngIf="telefono.errors?.['required']">El teléfono es obligatoria.</small>
         <small *ngIf="telefono.errors?.['pattern']">El teléfono debe ser un número.</small>
@@ -32,12 +37,51 @@
     <div style="margin-top: 35px">
         <p-button (onClick)="cancelRecord()" [text]="true" label="Cancelar" [rounded]="true"
             [style]="{'color': 'black', 'font-size': '10px', 'margin-left': '60px'}"></p-button>
-        <p-button label="Guardar" icon="pi pi-save" [rounded]="true"
+        <p-button label="Guardar" (onClick)="createHuesped()" icon="pi pi-save" [rounded]="true"
             [style]="{'background-color': 'limegreen','border-color':'limegreen', 'color': 'black', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
     </div>
-</div>
+</p-dialog>
+
+<p-dialog [(visible)]="isVisibleUpdate" [modal]="true" header="Modificar Huésped">
+    <div style="margin-top: 20px">
+        <p-floatLabel>
+            <input pInputText id="cedula" [formControl]="cedula" />
+            <label style="color: black" for="cedula">Cédula</label>
+        </p-floatLabel>
+    </div>
+    <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)">
+        <small *ngIf="cedula.errors?.['pattern']">La cédula debe contener solo números.</small>
+    </div>
+    <div style="margin-top: 25px">
+        <p-floatLabel [style]="{'margin-top': '20px'}">
+            <input pInputText id="nombre" [formControl]="nombre" />
+            <label style="color: black" for="nombre">Nombre</label>
+        </p-floatLabel>
+    </div>
+    <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+        <small *ngIf="nombre.errors?.['pattern']">El nombre debe contener solo letras.</small>
+    </div>
+
+    <div style="margin-top: 25px">
+        <p-floatLabel [style]="{'margin-top': '25px'}">
+            <input pInputText id="telefono" [formControl]="telefono" [ngModel]="" />
+            <label style="color: black" for="telefono">Teléfono</label>
+        </p-floatLabel>
+    </div>
+    <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)">
+        <small *ngIf="telefono.errors?.['pattern']">El teléfono debe ser un número.</small>
+    </div>
+
+    <div style="margin-top: 35px">
+        <p-button (onClick)="cancelRecord()" [text]="true" label="Cancelar" [rounded]="true"
+            [style]="{'color': 'black', 'font-size': '10px', 'margin-left': '60px'}"></p-button>
+        <p-button label="Actualizar" (onClick)="updateHuesped()" [rounded]="true"
+            [style]="{'background-color': 'limegreen','border-color':'limegreen', 'color': 'black', 'font-size': '10px', 'margin-left': '10px'}"></p-button>
+    </div>
+</p-dialog>
+
 <p-table [(selection)]="selectedHuespedes" dataKey="cedula" [value]="huespedes" scrollable="true" scrollHeight="300px"
-    class="small-table" [style]="{
+    [style]="{
       'height':'300px',
       'width': '700px',
       'border-radius': '5px',
@@ -46,6 +90,7 @@
       'margin-left': '280px'}">
     <ng-template pTemplate="header">
         <tr>
+            <th><p-tableHeaderCheckbox /></th>
             <th>Acción</th>
             <th>Cédula</th>
             <th>Nombre</th>
@@ -54,18 +99,15 @@
     </ng-template>
     <ng-template pTemplate="body" let-huesped>
         <tr>
-            <td style="display: flex;">
-                <p-tableCheckbox [value]="huesped" [style]="{
-          'margin-right':'5px',
-          'margin-top' : '-1px'
-        }" />
-                <p-button icon="pi pi-pen-to-square" [text]="true" class="p-button-text" [style]="{ 
-          'color': 'orange',
-          'margin-top': '0', 
-          'border-radius': '5px', 
-          'margin-left':'5px',
-          'padding': '0px'
-           }" />
+            <td>
+                <p-tableCheckbox [value]="huesped" />
+            </td>
+            <td>
+                <p-button icon="pi pi-pen-to-square" (onClick)="editHuesped(huesped)" [text]="true"
+                    class="p-button-text" [style]="{ 
+                              'color': 'orange',
+                              'border-radius': '5px',
+                              'padding': '0px'}" />
             </td>
             <td>{{ huesped.cedula }}</td>
             <td>{{ huesped.nombre }}</td>
@@ -73,8 +115,6 @@
         </tr>
     </ng-template>
 </p-table>
-<p class="p1">
-    <input class="box" type="checkbox" (change)="toggleSelectAll($event)" [checked]="isAllSelected()" /> Seleccionar
-    todo
-</p>
+<p-toast position="bottom-center"/>
+<p-confirmDialog></p-confirmDialog>
 <p class="p2">Resultado:{{huespedes.length}}</p>

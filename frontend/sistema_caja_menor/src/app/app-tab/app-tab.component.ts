@@ -3,14 +3,6 @@ import { CommonModule } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
 import { RouterModule, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { AppInicioComponent } from '../app-inicio/app-inicio.component';
-import { AppHuespedComponent } from "../app-huesped/app-huesped.component";
-import { AppHospedajeComponent } from '../app-hospedaje/app-hospedaje.component';
-import { AppIngresoHospedajeComponent } from '../app-ingreso-hospedaje/app-ingreso-hospedaje.component';
-import { AppIngresoProductoComponent } from '../app-ingreso-producto/app-ingreso-producto.component';
-import { AppProductoComponent } from '../app-producto/app-producto.component';
-import { AppRetiranteComponent } from '../app-retirante/app-retirante.component';
-import { AppRetiroComponent } from '../app-retiro/app-retiro.component';
 
 @Component({
   selector: 'app-app-tab',
@@ -18,21 +10,13 @@ import { AppRetiroComponent } from '../app-retiro/app-retiro.component';
   imports: [
     CommonModule,
     RouterModule,
-    AppRetiranteComponent,
-    AppRetiranteComponent,
-    AppProductoComponent,
-    AppIngresoProductoComponent,
     TabViewModule,
     ButtonModule,
-    AppInicioComponent,
-    AppHuespedComponent,
-    AppHospedajeComponent,
-    AppIngresoHospedajeComponent,
-    AppRetiroComponent
   ],
   template: `
     <p-tabView (onChange)="onTabChange($event)" [activeIndex]="activeTabIndex" [style]="{
           'position': 'fixed',
+          'z-index' : '1040',
           'top': '61px',
           'left': '-1px',
           'right': '-1px',
@@ -88,10 +72,11 @@ import { AppRetiroComponent } from '../app-retiro/app-retiro.component';
     </p-tabView>
   `,
   styles: `
-   :host ::ng-deep .p-tabview-nav {
+
+   :host ::ng-deep .p-tabview-nav { 
       background-color: #7CA49F;
     }
-   :host ::ng-deep .p-tabview .p-tabview-panels {
+   :host ::ng-deep .p-tabview .p-tabview-panels { 
       background: #EDEAEA;
       width: 100vw;
       height: 100vh;
