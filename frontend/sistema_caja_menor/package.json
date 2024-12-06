@@ -10,13 +10,6 @@
     "test": "ng test",
     "serve:ssr:sistema_caja_menor": "node dist/sistema_caja_menor/server/server.mjs"
   },
-  "budgets": [
-    {
-      "type": "initial",
-      "maximumWarning": "2mb",
-      "maximumError": "2mb"
-    }
-  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.2.0",
